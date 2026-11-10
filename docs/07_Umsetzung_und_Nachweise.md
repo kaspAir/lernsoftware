@@ -93,7 +93,7 @@ Legende: **umgesetzt** (Code + Test) · **teilweise** · **Inkr. N** (später ge
 | NF-04 | Nachweise | umgesetzt (Versuch, Freigabe, Aufruf, Anmeldung, Sperre) | test_ablauf_durchgaengig :: Nachweis-Arten |
 | NF-05 | Deutsch, Schweizer Schreibweise | umgesetzt in Texten | — |
 | NF-06 | Mandantentests | umgesetzt | test_mandant_und_rollen (siehe PL-05) |
-| NF-07 | Modellzugang nur über Adapter | umgesetzt (Vertrag); Live offen (D-05) | test_lernbegleiter_und_modell :: test_vertrag_setzt_drei_pflichtkopfzeilen, :: test_409_…, :: test_502_…, :: test_503_…; test_live_vorschaltdienst |
+| NF-07 | Modellzugang nur über Adapter | umgesetzt (Vertrag); Dienst läuft, Anwendung noch nicht registriert (D-05) | test_lernbegleiter_und_modell :: test_vertrag_setzt_drei_pflichtkopfzeilen, :: test_409_…, :: test_502_…, :: test_503_…; test_live_vorschaltdienst |
 | NF-12 | keine Zugangsdaten im Repository | umgesetzt (Demo-Passwörter zufällig, nur Konsole; Testpasswörter nur in Testdatenbank) | Prüfung durch Review |
 
 **Nicht getestet im Inkrement 1:** Die fachliche Qualität von Aufgaben und Rückmeldungen an einem Referenzsatz (Abnahmekriterium der Anforderung 7). Der Referenzsatz besteht aus zwei synthetischen Aufgaben; eine fachliche Bewertung durch eine Lehrperson steht aus.
@@ -108,7 +108,7 @@ Legende: **umgesetzt** (Code + Test) · **teilweise** · **Inkr. N** (später ge
 | **A-2** | RLS nicht umgesetzt | Inkrement 1 fokussiert den Ablauf | Schutz hängt von der Repository-Schicht ab; Tests prüfen das | Inkr. 5 |
 | **A-3** | Aufgabenerzeugung durch Modell nicht im Inkrement 1 | Ablauf ohne Modell prüfbar; Aufgaben werden von Lehrpersonen oder Assistenz angelegt | keine automatische Erzeugung | Inkr. 2 |
 | **A-4** | Rückmeldung zu Aufgaben deterministisch (Lösungsbegründung) | verlässlich, ohne Modell prüfbar | keine individuellen Formulierungen über den hinterlegten Text hinaus | Inkr. 2 |
-| **A-5** | Kein Live-Test gegen den Vorschaltdienst | Dienst nicht erreichbar (siehe 5) | Modellpfad ist nur gegen Testdouble und Dokumentation geprüft | Dienst starten, Live-Test wiederholen |
+| **A-5** | Keine Anwendungsanbindung an den Vorschaltdienst | Anwendung `lernsoftware` nicht registriert; kein Anbieterschlüssel | 409- und 503-Verhalten nur gegen Testdouble geprüft | Registrierung nach Freigabe, dann Live-Test der Fehlerfälle |
 | **A-6** | Nur `.txt` und `.md` | Inkrement-Umfang | keine PDF/DOCX/PPTX-Unterlagen | Inkr. 2 |
 | **A-7** | Ebene C (fachlich geprüft) nur über Anlage durch Lehrperson; keine Prüfansicht | Inkr. 2 | Prüfstatus-Anzeige vollständig erst mit Inkr. 2 | Inkr. 2 |
 | **A-8** | Aufgaben können nicht bearbeitet werden (nur anlegen und fachlich prüfen) | Inkr. 2 mit Versionierung | Änderung einer Aufgabe nur über neue Aufgabe | Inkr. 2 |
@@ -142,7 +142,12 @@ LERNSOFTWARE_PROTOKOLL=1 VORSCHALT_LIVE=1 python -m pytest
 
 Ohne `VORSCHALT_LIVE=1` wird der Live-Test als *nicht geprüft* protokolliert, nicht als bestanden.
 
-**Prüfung des Vorschaltdienstes (2026-11-10):** `curl http://127.0.0.1:8040/pseudo/v1/health` lieferte Verbindungsabbruch (Exit-Code 7). Der Dienst ist im Projekt daher **nicht verfügbar**. Der Dienst wurde nicht gestartet: Er benötigt einen Tresor-Schlüssel und schreibt in sein eigenes Datenverzeichnis, was ohne Auftrag nicht geschehen soll.
+**Prüfung des Vorschaltdienstes (2026-11-10, nach Start auf Anweisung):**
+
+- Der Dienst wurde im Modus `develop` auf `127.0.0.1:8040` gestartet (Schlüssel nur als Prozess-Umgebungsvariable, nicht gespeichert).
+- Health-Endpunkt: `status: bereit`, Version 0.0.1, Wortliste geladen, Stufe C inaktiv. **Live-Test bestanden.**
+- Vertrag ohne Anbieteraufruf: Fehlende Kopfzeilen → 400 `kontext_fehlt`. Unbekannte Anwendung → 400 `kontext_fehlt`.
+- **Offen:** Die Anwendung `lernsoftware` ist im Dienst **nicht registriert** (ANBINDUNG.md, Schritt 1). Dadurch sind die Antworten 409 (Entscheidung nötig) und 503 (kein Anbieterschlüssel) von hier aus noch nicht prüfbar. Die Registrierung ist eine Änderung an den Daten des Pseudonymisierungsdienstes und braucht eine Freigabe. **Kein Anbieterschlüssel wurde hinterlegt**; deshalb ist kein Aufruf an einen Anbieter möglich.
 
 **Demonstration:** `python -m app.demo` läuft ohne Fehler durch. Die Ausgabe zeigt je Schritt den HTTP-Status; die Abweisungen (Assistenz ohne Freigabe: 403; Studierende ohne Lehrsicht: 403; fremde Organisation: 404) sind darin sichtbar.
 

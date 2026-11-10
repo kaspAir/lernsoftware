@@ -1,0 +1,438 @@
+{
+  "protokoll": {
+    "erzeugt_am": "2026-11-10T13:31:04.074967+00:00",
+    "umgebung": "develop",
+    "version_norm": "RA v0.4 · NR-01…NR-10",
+    "version_testset": "TS-1 (synthetisch)",
+    "modell_herkunft": "SIMULIERT (Testadapter) — echte Modellläufe nur, wo unten als echt ausgewiesen",
+    "zusammenfassung": {
+      "bestanden": 70,
+      "nicht_bestanden": 0,
+      "nicht_geprueft": 0
+    },
+    "exitstatus": 0,
+    "faelle": [
+      {
+        "test": "tests/test_ablauf_durchgaengig.py::test_durchgaengiger_lernablauf",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_durchgaengiger_lernablauf"
+      },
+      {
+        "test": "tests/test_anmeldung.py::test_passwort_nur_als_argon2_hash",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_passwort_nur_als_argon2_hash"
+      },
+      {
+        "test": "tests/test_anmeldung.py::test_zu_kurzes_passwort_wird_abgelehnt",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_zu_kurzes_passwort_wird_abgelehnt"
+      },
+      {
+        "test": "tests/test_anmeldung.py::test_fehlversuche_sperren_konto_auch_bei_richtigem_passwort",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_fehlversuche_sperren_konto_auch_bei_richtigem_passwort"
+      },
+      {
+        "test": "tests/test_anmeldung.py::test_fehlermeldung_verraet_keine_kontenexistenz",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_fehlermeldung_verraet_keine_kontenexistenz"
+      },
+      {
+        "test": "tests/test_anmeldung.py::test_konto_in_zwei_organisationen_mit_getrennten_sitzungen",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_konto_in_zwei_organisationen_mit_getrennten_sitzungen"
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_aenderung_freigegebener_unterlage_setzt_status_zurueck",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_aenderung_freigegebener_unterlage_setzt_status_zurueck"
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_aufgaben_in_pruefung_sind_ausgeblendet_und_nicht_bearbeitbar",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_aufgaben_in_pruefung_sind_ausgeblendet_und_nicht_bearbeitbar"
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_freigabe_unter_auflage_braucht_verantwortliche_und_zukunftsfrist",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_freigabe_unter_auflage_braucht_verantwortliche_und_zukunftsfrist"
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_nicht_freigebbar_verlangt_begruendung",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_nicht_freigebbar_verlangt_begruendung"
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_unterlage_version_bleibt_erhalten_und_nachweis_entsteht",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_unterlage_version_bleibt_erhalten_und_nachweis_entsteht"
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_richtige_antwort_mit_punkten_im_maximum",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_richtige_antwort_mit_punkten_im_maximum"
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_hilfe_vor_antwort_wird_vermerkt_und_zaehlt_nicht_selbststaendig",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_hilfe_vor_antwort_wird_vermerkt_und_zaehlt_nicht_selbststaendig"
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_hilfe_ohne_hinterlegten_inhalt_wird_ehrlich_gemeldet",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_hilfe_ohne_hinterlegten_inhalt_wird_ehrlich_gemeldet"
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_versuch_bleibt_unveraendert_wenn_aufgabe_spaeter_geaendert_wird",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_versuch_bleibt_unveraendert_wenn_aufgabe_spaeter_geaendert_wird"
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_fremder_versuch_ist_nicht_sichtbar",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_fremder_versuch_ist_nicht_sichtbar"
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_auswertung_nur_ueber_schluessel_ohne_modell",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_auswertung_nur_ueber_schluessel_ohne_modell"
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_neue_fassung_nach_ablehnung_kehrt_in_den_entwurf",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_neue_fassung_nach_ablehnung_kehrt_in_den_entwurf"
+      },
+      {
+        "test": "tests/test_kern.py::test_single_choice_voll_oder_null",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_single_choice_voll_oder_null"
+      },
+      {
+        "test": "tests/test_kern.py::test_multiple_choice_teilpunkte_nie_negativ_nie_ueber_maximum[gegeben0-erwartet0]",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_multiple_choice_teilpunkte_nie_negativ_nie_ueber_maximum[gegeben0-erwartet0]"
+      },
+      {
+        "test": "tests/test_kern.py::test_multiple_choice_teilpunkte_nie_negativ_nie_ueber_maximum[gegeben1-erwartet1]",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_multiple_choice_teilpunkte_nie_negativ_nie_ueber_maximum[gegeben1-erwartet1]"
+      },
+      {
+        "test": "tests/test_kern.py::test_multiple_choice_teilpunkte_nie_negativ_nie_ueber_maximum[gegeben2-erwartet2]",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_multiple_choice_teilpunkte_nie_negativ_nie_ueber_maximum[gegeben2-erwartet2]"
+      },
+      {
+        "test": "tests/test_kern.py::test_multiple_choice_teilpunkte_nie_negativ_nie_ueber_maximum[gegeben3-erwartet3]",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_multiple_choice_teilpunkte_nie_negativ_nie_ueber_maximum[gegeben3-erwartet3]"
+      },
+      {
+        "test": "tests/test_kern.py::test_multiple_choice_teilpunkte_nie_negativ_nie_ueber_maximum[gegeben4-erwartet4]",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_multiple_choice_teilpunkte_nie_negativ_nie_ueber_maximum[gegeben4-erwartet4]"
+      },
+      {
+        "test": "tests/test_kern.py::test_luecke_normalisiert_ohne_bedeutungsaenderung",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_luecke_normalisiert_ohne_bedeutungsaenderung"
+      },
+      {
+        "test": "tests/test_kern.py::test_prozent_konsistent_und_null_maximum",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_prozent_konsistent_und_null_maximum"
+      },
+      {
+        "test": "tests/test_kern.py::test_hilfe_zaehlt_nicht_als_selbststaendig",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_hilfe_zaehlt_nicht_als_selbststaendig"
+      },
+      {
+        "test": "tests/test_kern.py::test_mehrere_richtige_auf_dieselbe_aufgabe_zaehlen_einmal",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_mehrere_richtige_auf_dieselbe_aufgabe_zaehlen_einmal"
+      },
+      {
+        "test": "tests/test_kern.py::test_ausreichend_erst_ab_schwelle_und_widerspruch",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_ausreichend_erst_ab_schwelle_und_widerspruch"
+      },
+      {
+        "test": "tests/test_kern.py::test_sm2_referenzwerte",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_sm2_referenzwerte"
+      },
+      {
+        "test": "tests/test_kern.py::test_sm2_falsch_setzt_zurueck_und_ease_untergrenze",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_sm2_falsch_setzt_zurueck_und_ease_untergrenze"
+      },
+      {
+        "test": "tests/test_kern.py::test_sm2_intervall_obergrenze",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_sm2_intervall_obergrenze"
+      },
+      {
+        "test": "tests/test_kern.py::test_qualitaet_mapping",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_qualitaet_mapping"
+      },
+      {
+        "test": "tests/test_kern.py::test_abschnitte_lueckenlos_und_begrenzt",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_abschnitte_lueckenlos_und_begrenzt"
+      },
+      {
+        "test": "tests/test_kern.py::test_markdown_ueberschrift_beginnt_neuen_abschnitt",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_markdown_ueberschrift_beginnt_neuen_abschnitt"
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_fremde_quelle_wird_abgelehnt",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_fremde_quelle_wird_abgelehnt"
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_bewertungssprache_wird_abgelehnt",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_bewertungssprache_wird_abgelehnt"
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_antwort_ohne_quelle_wird_als_unbelegt_benannt",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_antwort_ohne_quelle_wird_als_unbelegt_benannt"
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_erfolgreiche_antwort_trägt_quelle_und_fachlich_ungeprueft",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_erfolgreiche_antwort_trägt_quelle_und_fachlich_ungeprueft"
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_blockierte_pseudonymisierung_sendet_nichts_und_erfindet_nichts",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_blockierte_pseudonymisierung_sendet_nichts_und_erfindet_nichts"
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_modell_nicht_erreichbar_ergibt_klare_meldung",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_modell_nicht_erreichbar_ergibt_klare_meldung"
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_ungueltiges_schema_wird_nach_festen_wiederholungen_abgebrochen",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_ungueltiges_schema_wird_nach_festen_wiederholungen_abgebrochen"
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_simulierte_antwort_ist_als_solche_gekennzeichnet",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_simulierte_antwort_ist_als_solche_gekennzeichnet"
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_simulation_ohne_ueberschneidung_meldet_luecke",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_simulation_ohne_ueberschneidung_meldet_luecke"
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_vertrag_setzt_drei_pflichtkopfzeilen",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_vertrag_setzt_drei_pflichtkopfzeilen"
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_409_wird_als_blockade_weitergereicht",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_409_wird_als_blockade_weitergereicht"
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_502_wird_nicht_als_netzfehler_verschluckt",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_502_wird_nicht_als_netzfehler_verschluckt"
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_503_ohne_schluessel_ist_konfigurationsfehler",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_503_ohne_schluessel_ist_konfigurationsfehler"
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_netzfehler_wird_zu_modellfehler",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_netzfehler_wird_zu_modellfehler"
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_leere_basis_url_verweigert_modellzugang",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_leere_basis_url_verweigert_modellzugang"
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_konstante_kopfzeilen_nicht_aus_eingabe",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_konstante_kopfzeilen_nicht_aus_eingabe"
+      },
+      {
+        "test": "tests/test_live_vorschaltdienst.py::test_vorschaltdienst_gesundheit_erreichbar",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_vorschaltdienst_gesundheit_erreichbar"
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_fremde_unterlage_ist_nicht_auffindbar",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_fremde_unterlage_ist_nicht_auffindbar"
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_fremdes_modul_nicht_in_liste_und_nicht_lesbar",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_fremdes_modul_nicht_in_liste_und_nicht_lesbar"
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_mandantenlose_abfrage_wird_verweigert",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_mandantenlose_abfrage_wird_verweigert"
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_mandant_abfrage_liefert_nur_eigene_zeilen",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_mandant_abfrage_liefert_nur_eigene_zeilen"
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_superadmin_sieht_nur_registrierungsdaten",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_superadmin_sieht_nur_registrierungsdaten"
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_superadmin_hat_keinen_zugriff_auf_inhalte",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_superadmin_hat_keinen_zugriff_auf_inhalte"
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_studierende_sieht_nur_zugewiesene_module",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_studierende_sieht_nur_zugewiesene_module"
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_assistenz_darf_nicht_freigeben_ohne_delegation",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_assistenz_darf_nicht_freigeben_ohne_delegation"
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_delegierte_assistenz_darf_freigeben",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_delegierte_assistenz_darf_freigeben"
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_admin_gibt_nicht_frei",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_admin_gibt_nicht_frei"
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_studierende_pflegen_keine_inhalte",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_studierende_pflegen_keine_inhalte"
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_schreibende_anfrage_ohne_csrf_wird_abgewiesen",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_schreibende_anfrage_ohne_csrf_wird_abgewiesen"
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_sitzungscookie_ist_httponly",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_sitzungscookie_ist_httponly"
+      },
+      {
+        "test": "tests/test_web_oberflaeche.py::test_anmeldeseite_ist_erreichbar_und_beschriftet",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_anmeldeseite_ist_erreichbar_und_beschriftet"
+      },
+      {
+        "test": "tests/test_web_oberflaeche.py::test_module_ohne_anmeldung_leiten_zur_anmeldung",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_module_ohne_anmeldung_leiten_zur_anmeldung"
+      },
+      {
+        "test": "tests/test_web_oberflaeche.py::test_studierende_sieht_modul_lektionen_und_uebung_erzeugen",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_studierende_sieht_modul_lektionen_und_uebung_erzeugen"
+      },
+      {
+        "test": "tests/test_web_oberflaeche.py::test_post_ohne_csrf_wird_in_oberflaeche_abgewiesen",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_post_ohne_csrf_wird_in_oberflaeche_abgewiesen"
+      },
+      {
+        "test": "tests/test_web_oberflaeche.py::test_rueckmeldung_zeigt_quelle_und_bleibt_zugaenglich",
+        "ergebnis": "bestanden",
+        "grund": null,
+        "kennung": "test_rueckmeldung_zeigt_quelle_und_bleibt_zugaenglich"
+      }
+    ],
+    "herkunft": "Test-Runner (pytest)"
+  }
+}
