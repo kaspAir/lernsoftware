@@ -66,10 +66,12 @@ def _zeige(titel: str, status: int, daten) -> None:
 
 
 def main(db_pfad: Path | None = None) -> int:
-    db_pfad = db_pfad or (PROJEKT / "instance" / "demo.sqlite3")
+    # Jeder Lauf bekommt eine eigene Datei: Eine noch geöffnete alte Datenbank (z. B. durch einen
+    # laufenden Server unter Windows) blockiert so keinen neuen Lauf.
+    if db_pfad is None:
+        from datetime import datetime
+        db_pfad = PROJEKT / "instance" / f"demo-{datetime.now():%Y%m%d-%H%M%S}.sqlite3"
     db_pfad.parent.mkdir(exist_ok=True)
-    if db_pfad.exists():
-        db_pfad.unlink()
     app = create_app({"DATABASE_URL": f"sqlite:///{db_pfad}", "MODELL_MODUS": "testadapter"})
     cfg = app.config["LERNCFG"]
 
