@@ -1,0 +1,18 @@
+# Umgebung und Geheimnisse
+.env
+*.env.local
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Laufzeitdaten (lokal, nie versionieren)
+instance/
+data/
+uploads/
+*.sqlite3
+
+# Persönliche Sicherungskopien der Dokumentation (lokal)
+docs.zip
