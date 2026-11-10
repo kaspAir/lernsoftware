@@ -1,0 +1,56 @@
+# Basiskonfiguration (RA-07). Änderungen erfordern eine neue version.
+schema_version: 1
+version: 1
+
+produkt:
+  name: "Lernsoftware"          # Arbeitsname, D-01 (vorläufig). Anzeigename nur hier.
+
+sicherheit:
+  argon2:
+    zeit_kosten: 3
+    speicher_kib: 65536
+    parallelitaet: 2
+  fehlversuche_bis_sperre: 5     # D-14
+  sperre_minuten: 15             # D-14
+  sitzung_minuten: 120
+
+evidenz:
+  schwelle_aufgaben: 3           # D-13: verschiedene selbstständig richtige Aufgaben
+  widerspruch_nach_falsch: 2     # zwei Fehler in Folge nach "ausreichend belegt"
+
+wiederholung:                    # SM-2, austauschbar (ADR-L-007)
+  start_ease: 2.5
+  min_ease: 1.3
+  max_intervall_tage: 365
+
+unterlagen:
+  max_bytes_text: 2000000        # Spez. §11, Startwert
+  abschnitt_min_zeichen: 300
+  abschnitt_max_zeichen: 1200
+  erlaubte_endungen: [".txt", ".md"]
+
+uebung:
+  max_aufgaben: 20               # Obergrenze je Übung (Konfiguration)
+
+modell:
+  modus: testadapter             # testadapter | vorschaltdienst (ADR-L-005)
+  vorschaltdienst_basis: "http://127.0.0.1:8040/anthropic"   # 8040 = develop (Pseudonymisierung)
+  modellname: "claude-sonnet-5-5"  # vor Live-Betrieb bestätigen
+  anwendung_kennung: "lernsoftware"
+
+lernbegleiter:
+  timeout_sekunden: 20
+  schema_wiederholungen: 1
+  verbotene_muster:              # BS-06, Spez. §10: Bewertungssprache
+    - "note "
+    - "bestanden"
+    - "nicht bestanden"
+    - "versagt"
+    - "du hast versagt"
+    - "ungenügend"
+
+normalisierung:
+  luecke:
+    kleinschreibung: true
+    leerraum_zusammenfassen: true
+    umlaute_vergleich: true      # ä=ae etc. nur für den Vergleich
