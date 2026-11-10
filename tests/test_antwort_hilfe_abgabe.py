@@ -236,9 +236,6 @@ def test_gleichzeitige_doppelabgaben_erzeugen_genau_einen_versuch(app, seeded, s
     def sende():
         barriere.wait()
         c = app.test_client()
-        c.post("/api/v1/auth/anmelden", json={"kurzname": "org-a", "benutzername": "student-a",
-                                              "passwort": "Testpasswort-2026"})
-        csrf = c.get("/healthz").status_code  # Platzhalter, damit der Thread eine eigene Sitzung hat
         anmeldung = c.post("/api/v1/auth/anmelden", json={"kurzname": "org-a", "benutzername": "student-a",
                                                           "passwort": "Testpasswort-2026"}).get_json()
         a = c.post(f"/api/v1/uebungen/{ue['id']}/versuche", json={"aufgabe_id": aid, "gegeben": ["antwort_b"]},
