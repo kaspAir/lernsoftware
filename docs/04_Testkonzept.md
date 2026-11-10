@@ -208,7 +208,7 @@ Ein eigener Satz mit **fest definierten Erwartungen**, geschrieben vor der Model
 
 - Umfang Start: 40 Testfragen aus Musterunterlagen (sechs Lektionen), je mit erwarteter Lösung, erwarteter Quelle und Liste verbotener Aussagen.
 - Prüfung: (a) Quellenkorrektheit durch Code, (b) Lösung durch Vergleich mit Erwartung, (c) Sprachprüfung durch Liste verbotener Muster; die inhaltliche Güte einer Erklärung wird **zusätzlich** von einer Lehrperson stichprobenartig bewertet (Prüfer ≠ Erzeuger).
-- Abnahmeschwelle: (a) 100 % Quellentreue (Kern-Prüfung, Verstösse werden nie angezeigt); (b) mindestens Schwellenwert D-15 bei Lösungstreue; (c) keine verbotenen Muster in der Ausgabe.
+- Abnahmeschwelle: (a) Quellen-ID-Prüfung 100 % (technisch: Verstösse werden nie angezeigt). Die fachliche Stützung einer Aussage durch ihre Quelle ist **davon getrennt** und wird über eine Lehrperson-Stichprobe gemessen (Spez. §3.5). Eine gültige Quellen-ID belegt keine inhaltliche Richtigkeit; «100 % Quellentreue» wird deshalb nicht behauptet; (b) mindestens Schwellenwert D-15 bei Lösungstreue; (c) keine verbotenen Muster in der Ausgabe.
 - Protokoll je Lauf mit Modell, Version, Testset-Version, Ergebnis.
 - Ein Modellwechsel verlangt einen neuen Lauf; die alte Freigabe gilt nicht mehr (ADR-L-005).
 
@@ -289,3 +289,65 @@ Abnahme durch Auftraggeber erfolgt auf `test`; Freigabe zu `integration` und `ma
 - Ground-Truth-Testset erstellen (40 Fragen) — Quelle: Musterunterlagen des Auftraggebers (D-16).
 - Grenzwerte für Fehlversuche (D-14) und Ground-Truth-Schwelle (D-15) festlegen.
 - Testdaten-Generator mit synthetischen Lernorganisationen und Konten.
+
+---
+
+## 12 · Umsetzungsstand der Testfälle (Inkrement 1)
+
+Stand 2026-11-10. Die Funktionsnamen stehen in `tests/`. «Teil» bedeutet: Der Fall ist im Kern des Testfalls abgedeckt, die vollständige Prüfform fehlt noch.
+
+| TC | Stand | Testfunktion(en) |
+|---|---|---|
+| TC-MAND-01 | umgesetzt | test_mandant_und_rollen: test_fremde_unterlage_ist_nicht_auffindbar, test_fremdes_modul_nicht_in_liste_und_nicht_lesbar |
+| TC-MAND-02 | umgesetzt | test_mandant_und_rollen: test_mandant_abfrage_liefert_nur_eigene_zeilen, test_mandantenlose_abfrage_wird_verweigert |
+| TC-MAND-04 | umgesetzt | test_mandant_und_rollen: test_superadmin_sieht_nur_registrierungsdaten, test_superadmin_hat_keinen_zugriff_auf_inhalte |
+| TC-MAND-05 | Teil | test_lernbegleiter_und_modell: test_fremde_quelle_wird_abgelehnt (Quellen-ID aus fremder Organisation nicht getestet) |
+| TC-MAND-03, -06 | offen | — |
+| TC-LOG-01 | umgesetzt | test_anmeldung: test_passwort_nur_als_argon2_hash |
+| TC-LOG-02 | umgesetzt | test_anmeldung: test_fehlversuche_sperren_konto_auch_bei_richtigem_passwort |
+| TC-LOG-03 | umgesetzt (keine Selbstregistrierung: keine Route vorhanden) | — (Prüfung durch Routenliste) |
+| TC-LOG-04 | umgesetzt | test_mandant_und_rollen: test_sitzungscookie_ist_httponly |
+| TC-LOG-05 | umgesetzt | test_mandant_und_rollen: test_schreibende_anfrage_ohne_csrf_wird_abgewiesen |
+| TC-MOD-01 | umgesetzt | test_mandant_und_rollen: test_studierende_sieht_nur_zugewiesene_module |
+| TC-MOD-02 | offen (Zuweisung entfernen fehlt) | — |
+| TC-MOD-03 | umgesetzt | test_mandant_und_rollen: test_assistenz_darf_nicht_freigeben_ohne_delegation, test_delegierte_assistenz_darf_freigeben |
+| TC-MOD-04 | Teil | Demo Schritt 6–7 (Anlage ohne Automatismus); kein automatischer Test |
+| TC-UPL-02 | Teil | Dateityp-Prüfung in `unterlage_hochladen` vorhanden, kein Test |
+| TC-FRE-01 | umgesetzt | test_freigabe_und_versuch: test_aenderung_freigegebener_unterlage_setzt_status_zurueck |
+| TC-FRE-02, -03 | umgesetzt | test_freigabe_und_versuch: test_aufgaben_in_pruefung_sind_ausgeblendet_und_nicht_bearbeitbar |
+| TC-FRE-04 | umgesetzt | test_freigabe_und_versuch: test_freigabe_unter_auflage_braucht_verantwortliche_und_zukunftsfrist |
+| TC-FRE-05 | offen (Überfälligkeitsmarkierung nicht umgesetzt) | — |
+| TC-FRE-06 | umgesetzt | test_freigabe_und_versuch: test_nicht_freigebbar_verlangt_begruendung |
+| TC-LRN-01, -02, -03 | umgesetzt | test_kern: test_sm2_referenzwerte, test_sm2_falsch_setzt_zurueck_und_ease_untergrenze |
+| TC-LRN-04 | Teil (Datum im Lernprofil, Anzeige Inkr. 2) | test_kern (Evidenz) |
+| TC-LRN-05 | Teil | test_freigabe_und_versuch (Ausblendung) |
+| TC-PRF-01 | umgesetzt | test_kern: test_single_choice_voll_oder_null, test_prozent_konsistent…; test_freigabe_und_versuch: test_richtige_antwort_mit_punkten_im_maximum |
+| TC-PRF-02 | umgesetzt | test_kern: test_multiple_choice_teilpunkte_nie_negativ_nie_ueber_maximum |
+| TC-PRF-04 | umgesetzt | test_freigabe_und_versuch: test_versuch_bleibt_unveraendert_wenn_aufgabe_spaeter_geaendert_wird |
+| TC-PRF-06 | umgesetzt | test_freigabe_und_versuch: test_aufgaben_in_pruefung_sind_ausgeblendet_und_nicht_bearbeitbar (409 bei leerer Auswahl) |
+| TC-PRF-07 | Teil (technische Aufgabenprüfung bei Anlage; Modellfall Inkr. 2) | — |
+| TC-BEG-01 | umgesetzt | test_lernbegleiter_und_modell: test_fremde_quelle_wird_abgelehnt |
+| TC-BEG-02 | umgesetzt | test_lernbegleiter_und_modell: test_ungueltiges_schema_wird_nach_festen_wiederholungen_abgebrochen |
+| TC-BEG-03 | umgesetzt | test_lernbegleiter_und_modell: test_bewertungssprache_wird_abgelehnt |
+| TC-BEG-04 | Teil (Pseudonym-Kennung; Namenskontrolle nicht implementiert) | test_lernbegleiter_und_modell: test_konstante_kopfzeilen_nicht_aus_eingabe |
+| TC-BEG-05 | umgesetzt | test_lernbegleiter_und_modell: test_antwort_ohne_quelle_wird_als_unbelegt_benannt |
+| TC-BEG-06 | umgesetzt | test_lernbegleiter_und_modell: test_erfolgreiche_antwort_trägt_quelle_und_fachlich_ungeprueft |
+| TC-BEG-07 | umgesetzt | test_lernbegleiter_und_modell: test_modell_nicht_erreichbar_ergibt_klare_meldung |
+| TC-BEG-08 | Teil (Versuch nur eigener Konto; Lehrsicht fehlt) | test_freigabe_und_versuch: test_fremder_versuch_ist_nicht_sichtbar |
+| TC-KI-01 | umgesetzt | test_lernbegleiter_und_modell: test_leere_basis_url_verweigert_modellzugang |
+| TC-KI-02 | offen (statische Suche nach Anbieter-Imports) | — |
+| TC-KI-03 | Teil (Aufrufnachweis im Lernbegleiter) | test_lernbegleiter_und_modell (Nachweis `modellaufruf`) |
+| TC-KI-04 | umgesetzt (Warnung im Start-Protokoll) | Log-Ausgabe von `create_app`; kein Test |
+| TC-NW-01, -02 | Teil (Nachweise werden neu angelegt; Änderungsverbot nicht technisch erzwungen) | — |
+| TC-NW-04 | Teil (`herkunft` je Versuch und Rückmeldung) | test_freigabe_und_versuch: test_auswertung_nur_ueber_schluessel_ohne_modell |
+| TC-NW-05 | offen | — |
+| TC-ERS-01…05 | offen (Erscheinungsbild Inkr. 4) | — |
+| TC-A11Y-01…04 | offen (Scan nicht durchgeführt) | — |
+| TC-NFT-01…03 | offen | — |
+| TC-SEC-01…04 | offen (SAST und Abhängigkeitsprüfung nicht eingerichtet) | — |
+| TC-AG-01…20 | Teil (Demo, Lernprofil; Prüfform offen) | — |
+| Live-Vorschaltdienst (D-05) | nicht bestanden (Dienst nicht erreichbar) | test_live_vorschaltdienst |
+
+Zusätzlich im Inkrement 1 (ohne TC-Kennung): Vertragstests des Vorschaltdienstes (Kopfzeilen, 409, 502, 503, Netzfehler), Durchgängigkeit des Lernablaufs (test_ablauf_durchgaengig), Web-Oberfläche (test_web_oberflaeche).
+
+**Offen für Inkrement 2:** TC-SEC-Werkzeuge (bandit, pip-audit) und ein automatischer Barrierefreiheits-Scan (axe-core) gehören in die CI, sobald eine Pipeline besteht.
