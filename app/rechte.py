@@ -12,8 +12,8 @@ from dataclasses import dataclass
 
 from sqlalchemy import select
 
-from .fehler import nicht_gefunden, verboten
-from .models import Mitgliedschaft, Modul, Modulzuweisung
+from .fehler import FachFehler, nicht_gefunden, verboten
+from .models import Konto, Lernorganisation, Mitgliedschaft, Modul, Modulzuweisung
 
 
 @dataclass(frozen=True)
@@ -24,6 +24,12 @@ class Kontext:
 
 
 def lade_kontext(session, konto_id: str, lernorganisation_id: str) -> Kontext:
+    """Lädt den Kontext bei JEDER Anfrage neu. Deaktivierte Konten und Organisationen verlieren
+    dadurch auch mit bestehender Sitzung sofort den Zugang (Inkrement 1.1, Punkt 4)."""
+    konto = session.get(Konto, konto_id)
+    org = session.get(Lernorganisation, lernorganisation_id)
+    if konto is None or konto.status != "aktiv" or org is None or org.status != "aktiv":
+        raise FachFehler("nicht_angemeldet", "Die Sitzung ist nicht mehr gültig. Bitte erneut anmelden.", status=401)
     mitgliedschaften = session.scalars(
         select(Mitgliedschaft).where(
             Mitgliedschaft.konto_id == konto_id,
@@ -45,6 +51,7 @@ def modul_im_mandanten(session, kontext: Kontext, modul_id: str) -> Modul:
 
 
 def zuweisung(session, kontext: Kontext, modul_id: str) -> Modulzuweisung | None:
+    """Die eine Modulzuweisung des Kontos (Regel: genau eine Rolle je Konto und Modul)."""
     return session.scalars(
         select(Modulzuweisung).where(
             Modulzuweisung.modul_id == modul_id,

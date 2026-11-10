@@ -10,6 +10,7 @@ Der Modellzugang ist der Testadapter; alle Modellausgaben sind als SIMULIERT gek
 import json
 import secrets
 import sys
+import uuid
 from pathlib import Path
 
 from . import create_app
@@ -56,7 +57,10 @@ class Klient:
         return a.status_code, a.get_json()
 
     def post(self, pfad, daten=None):
-        a = self.c.post(f"/api/v1{pfad}", json=daten or {}, headers={"X-CSRF-Token": self.csrf or ""})
+        kopf = {"X-CSRF-Token": self.csrf or ""}
+        if "/versuche" in pfad or "/gespraech" in pfad:
+            kopf["Idempotency-Key"] = uuid.uuid4().hex  # jede Abgabe ist eine neue Anfrage
+        a = self.c.post(f"/api/v1{pfad}", json=daten or {}, headers=kopf)
         return a.status_code, a.get_json()
 
 
@@ -65,7 +69,10 @@ def _zeige(titel: str, status: int, daten) -> None:
     print(json.dumps(daten, ensure_ascii=False, indent=2, default=str)[:1500])
 
 
-def main(db_pfad: Path | None = None) -> int:
+def main(db_pfad: Path | None = None, passwoerter: dict | None = None) -> int:
+    """Legt eine frische Demo-Datenbank an. `passwoerter` (optional) erhält die erzeugten Zugangsdaten
+    für Tests; die Konsolenausgabe bleibt unverändert."""
+    standard_pfad = db_pfad is None
     # Jeder Lauf bekommt eine eigene Datei: Eine noch geöffnete alte Datenbank (z. B. durch einen
     # laufenden Server unter Windows) blockiert so keinen neuen Lauf.
     if db_pfad is None:
@@ -76,6 +83,8 @@ def main(db_pfad: Path | None = None) -> int:
     cfg = app.config["LERNCFG"]
 
     pw = {k: secrets.token_urlsafe(12) for k in ("sa", "admin", "dozent", "assistenz", "student", "admin2", "student2")}
+    if passwoerter is not None:
+        passwoerter.update(pw)
     print("Zufällige Demo-Passwörter (nur für diese Sitzung, nicht gespeichert):")
     for k in ("sa", "admin", "dozent", "assistenz", "student"):
         print(f"  {k:10s} {pw[k]}")
@@ -197,7 +206,13 @@ def main(db_pfad: Path | None = None) -> int:
     _zeige("19 · Admin einer anderen Organisation greift auf fremdes Modul zu (erwartet: 404)", st, d)
     st, d = fremd.get("/module")
     _zeige("19b · Andere Organisation sieht das Modul nicht in der Liste", st, d)
+    # Zeiger für den Server: `run.py` nimmt die zuletzt erzeugte Demo-Datenbank ohne Umgebungsvariable
+    if standard_pfad:
+        (PROJEKT / "instance" / "aktuelle-demo.txt").write_text(
+            f"sqlite:///{db_pfad.resolve().as_posix()}", encoding="utf-8")
     print(f"\nDatenbank: {db_pfad}")
+    print("Server starten (PowerShell, im Projektordner):  .venv\\Scripts\\python.exe run.py")
+    print("Dann im Browser: http://127.0.0.1:5050/anmelden  (Organisation beispiel-hs, Benutzer student)")
     return 0
 
 

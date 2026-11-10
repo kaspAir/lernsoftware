@@ -19,6 +19,26 @@ PROJEKT = Path(__file__).resolve().parent.parent
 log = logging.getLogger("lernsoftware")
 
 
+MODI = ("testadapter", "vorschaltdienst")
+
+
+def wirksamer_modus(cfg: dict, ueberschreibung: str | None = None) -> tuple[str, str]:
+    """Ermittelt den wirksamen Modellmodus und die Quelle der Entscheidung.
+
+    Reihenfolge: Testparameter, dann Umgebungsvariable LERNSOFTWARE_MODELL, dann config/basis.yaml.
+    Ungültige Werte führen zu einem Fehler, nie zu einem stillen Rückfall.
+    """
+    if ueberschreibung:
+        quelle, modus = "Testparameter", ueberschreibung
+    elif os.environ.get("LERNSOFTWARE_MODELL"):
+        quelle, modus = "Umgebungsvariable LERNSOFTWARE_MODELL", os.environ["LERNSOFTWARE_MODELL"].strip()
+    else:
+        quelle, modus = "config/basis.yaml", cfg["modell"]["modus"]
+    if modus not in MODI:
+        raise ValueError(f"Unbekannter Modellmodus «{modus}» (erlaubt: {', '.join(MODI)})")
+    return modus, quelle
+
+
 def erstelle_modell(cfg: dict, modus: str | None = None):
     m = modus or cfg["modell"]["modus"]
     if m == "vorschaltdienst":
@@ -49,10 +69,17 @@ def create_app(test_konfig: dict | None = None) -> Flask:
     engine = erstelle_engine(url)
     Basis.metadata.create_all(engine)
     app.config["SITZUNG"] = sitzungsfabrik(engine)
-    app.config["MODELL"] = erstelle_modell(cfg, (test_konfig or {}).get("MODELL_MODUS"))
+    modus, quelle = wirksamer_modus(cfg, (test_konfig or {}).get("MODELL_MODUS"))
+    app.config["MODELL"] = erstelle_modell(cfg, modus)
+    app.config["MODELL_ANZEIGE"] = {
+        "modus": modus, "quelle": quelle,
+        "text": ("Modell: SIMULIERT (Testadapter) – keine echte Modellprüfung"
+                 if modus == "testadapter" else "Modell: Vorschaltdienst (echte Modellausgaben)"),
+    }
 
-    # Start-Protokoll (Betrieb): unklare Zustände melden sich beim Start
-    if app.config["MODELL"].herkunft == "SIMULIERT":
+    # Start-Protokoll (Betrieb): wirksamer Modus und Warnungen erscheinen beim Start
+    log.warning("Start: Modellmodus = %s (Quelle: %s)", modus, quelle)
+    if modus == "testadapter":
         log.warning("Start: Testadapter aktiv – Modellausgaben sind SIMULIERT, nicht geprüft.")
     if os.environ.get("LERNSOFTWARE_SECRET") is None:
         log.warning("Start: Standard-Geheimnis aktiv – nur für lokale Entwicklung.")
@@ -69,6 +96,7 @@ def create_app(test_konfig: dict | None = None) -> Flask:
     @app.get("/healthz")
     def healthz():
         return jsonify({"status": "bereit", "produkt": cfg["produkt"]["name"],
-                        "modell_herkunft": app.config["MODELL"].herkunft})
+                        "modell_herkunft": app.config["MODELL"].herkunft,
+                        "modell": app.config["MODELL_ANZEIGE"]})
 
     return app

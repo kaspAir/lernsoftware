@@ -6,6 +6,7 @@ produkt:
   name: "Lernsoftware"          # Arbeitsname, D-01 (vorläufig). Anzeigename nur hier.
 
 sicherheit:
+  sitzung_gilt: "ab_anmeldung"   # Festlegung 1.1: 120 Minuten ab Anmeldung (app/sitzung.py)
   argon2:
     zeit_kosten: 3
     speicher_kib: 65536
@@ -33,13 +34,19 @@ uebung:
   max_aufgaben: 20               # Obergrenze je Übung (Konfiguration)
 
 modell:
-  modus: testadapter             # testadapter | vorschaltdienst (ADR-L-005)
+  # Auswahl über Umgebungsvariable LERNSOFTWARE_MODELL (testadapter | vorschaltdienst); dieser
+  # Wert gilt nur, wenn die Variable fehlt. Der wirksame Modus wird im Start-Protokoll und in
+  # der Oberfläche angezeigt (Inkrement 1.1, Punkt 8).
+  modus: testadapter
   vorschaltdienst_basis: "http://127.0.0.1:8040/anthropic"   # 8040 = develop (Pseudonymisierung)
   modellname: "claude-sonnet-5-5"  # vor Live-Betrieb bestätigen
   anwendung_kennung: "lernsoftware"
 
 lernbegleiter:
   timeout_sekunden: 20
+  verlauf_max: 6                 # letzte Nachrichten des Gesprächs im Modellkontext
+  kontext_max_zeichen: 6000      # Obergrenze des Modellkontexts (wird gekürzt, nie still)
+  frage_max_zeichen: 500
   schema_wiederholungen: 1
   verbotene_muster:              # BS-06, Spez. §10: Bewertungssprache
     - "note "

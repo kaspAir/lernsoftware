@@ -2,6 +2,7 @@
 Sicherheitstoken, und zeigt Rückmeldung mit Quelle sowie die Kennzeichnung der Modellherkunft
 (NF-01, NF-03, AG-14, TC-A11Y-03 teilweise)."""
 import re
+import secrets
 
 
 def _csrf_aus_seite(html: str) -> str:
@@ -66,7 +67,8 @@ def test_rueckmeldung_zeigt_quelle_und_bleibt_zugaenglich(seeded):
     csrf = _csrf_aus_seite(seite)
     aufgabe_id = seeded["aufgabe1"]
     antwort = c.post(f"/uebungen/{ue.headers['Location'].split('/')[-1]}/versuch",
-                     data={"aufgabe_id": aufgabe_id, "gegeben": "a", "csrf": csrf})
+                     data={"aufgabe_id": aufgabe_id, "gegeben": "a", "csrf": csrf,
+                           "schluessel": secrets.token_hex(12)})
     assert antwort.status_code == 302
     rueck = c.get(antwort.headers["Location"]).get_data(as_text=True)
     assert "Rückmeldung" in rueck

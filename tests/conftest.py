@@ -5,6 +5,7 @@ Testdatenbank existieren (keine Zugangsdaten für reale Systeme).
 """
 import json
 import os
+import secrets
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -32,12 +33,17 @@ _ergebnisse: list[dict] = []
 def pytest_runtest_logreport(report):
     if report.when != "call" and not (report.when == "setup" and report.skipped):
         return
-    doc = (report.nodeid.split("::")[-1])
+    if "live" in report.keywords:
+        art = "live"
+    elif report.nodeid.startswith("tests/fachlich"):
+        art = "fachlich_synthetisch"  # Referenzprüfung, keine Lehrpersonen-Abnahme
+    else:
+        art = "technisch"
     _ergebnisse.append({
         "test": report.nodeid,
-        "ergebnis": {"passed": "bestanden", "failed": "nicht_bestanden", "skipped": "nicht_geprueft"}[report.outcome],
+        "art": art,
+        "ergebnis": {"passed": "bestanden", "failed": "nicht_bestanden", "skipped": "nicht_geprüft"}[report.outcome],
         "grund": str(report.longrepr)[:300] if report.outcome == "skipped" else None,
-        "kennung": doc,
     })
 
 
@@ -56,8 +62,11 @@ def pytest_sessionfinish(session, exitstatus):
             "umgebung": "develop",
             "version_norm": "RA v0.4 · NR-01…NR-10",
             "version_testset": "TS-1 (synthetisch)",
-            "modell_herkunft": "SIMULIERT (Testadapter) — echte Modellläufe nur, wo unten als echt ausgewiesen",
+            "modell_herkunft": "SIMULIERT (Testadapter); kein Lauf mit echtem Modell",
             "zusammenfassung": zaehler,
+            "nach_art": {a: {k: sum(1 for e in _ergebnisse if e["art"] == a and e["ergebnis"] == k)
+                             for k in ("bestanden", "nicht_bestanden", "nicht_geprüft")}
+                         for a in ("technisch", "fachlich_synthetisch", "live")},
             "exitstatus": int(exitstatus),
             "faelle": _ergebnisse,
             "herkunft": "Test-Runner (pytest)",
@@ -114,8 +123,12 @@ class Klient:
         self.c = client
         self.csrf = csrf
 
-    def post(self, pfad, daten=None):
-        a = self.c.post(f"/api/v1{pfad}", json=daten or {}, headers={"X-CSRF-Token": self.csrf or ""})
+    def post(self, pfad, daten=None, schluessel=None):
+        kopf = {"X-CSRF-Token": self.csrf or ""}
+        if "/versuche" in pfad or "/gespraech" in pfad:
+            # Abgaben und Fragen verlangen einen Anfrage-Schlüssel; Tests erzeugen einen neuen je Aufruf
+            kopf["Idempotency-Key"] = schluessel or secrets.token_hex(12)
+        a = self.c.post(f"/api/v1{pfad}", json=daten or {}, headers=kopf)
         return a.status_code, a.get_json()
 
     def get(self, pfad):
@@ -187,8 +200,8 @@ def seeded(app, sitzung, cfg):
         "aufgabe_text": "Welche Ereignisse sind bei einem Würfelwurf unvereinbar?",
         "optionen": [{"id": "a", "text": "eins und sechs"}, {"id": "b", "text": "gerade und ungerade"},
                      {"id": "c", "text": "eins und zwei"}],
-        "loesung": ["a", "b"], "max_punkte": 2,
-        "erklaerung": "Eins und sechs sowie gerade und ungerade schliessen sich aus.",
+        "loesung": ["a", "b", "c"], "max_punkte": 3,
+        "erklaerung": "Eins und sechs, gerade und ungerade sowie eins und zwei schliessen sich aus.",
         "abschnitt_ids": [abschn[-1]["id"]]})
     assert st == 201, a2
     ids.update({"lektion": lek["id"], "ziel1": z1["id"], "ziel2": z2["id"], "unterlage": u["id"],

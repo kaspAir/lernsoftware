@@ -65,9 +65,9 @@ def test_richtige_antwort_mit_punkten_im_maximum(seeded):
     """Beweist: Vollständige Mehrfachauswahl ergibt genau das Maximum; Prozent ist 100 (PR-05)."""
     stu, ue = _uebung(seeded, [seeded["lektion"]])
     aufgabe = next(a for a in ue["aufgaben"] if a["id"] == seeded["aufgabe2"])
-    st, daten = stu.post(f"/uebungen/{ue['id']}/versuche", {"aufgabe_id": aufgabe["id"], "gegeben": ["a", "b"]})
+    st, daten = stu.post(f"/uebungen/{ue['id']}/versuche", {"aufgabe_id": aufgabe["id"], "gegeben": ["a", "b", "c"]})
     assert st == 201
-    assert daten["punkte"] == 2.0 and daten["maximum"] == 2.0 and daten["prozent"] == 100
+    assert daten["punkte"] == 3.0 and daten["maximum"] == 3.0 and daten["prozent"] == 100
 
 
 def test_hilfe_vor_antwort_wird_vermerkt_und_zaehlt_nicht_selbststaendig(seeded):
@@ -76,7 +76,7 @@ def test_hilfe_vor_antwort_wird_vermerkt_und_zaehlt_nicht_selbststaendig(seeded)
     aufgabe = seeded["aufgabe1"]
     st, _ = stu.post(f"/uebungen/{ue['id']}/hilfe", {"aufgabe_id": aufgabe, "art": "hinweis"})
     assert st == 200
-    st, daten = stu.post(f"/uebungen/{ue['id']}/versuche", {"aufgabe_id": aufgabe, "gegeben": "b"})
+    st, daten = stu.post(f"/uebungen/{ue['id']}/versuche", {"aufgabe_id": aufgabe, "gegeben": ["b"]})
     assert st == 201 and daten["richtig"] is True and daten["hilfen_vorher"] == 1
     st, profil = stu.get(f"/module/{seeded['modul']}/lernprofil")
     ziel = next(z for z in profil if z["lernziel_id"] == seeded["ziel1"])
@@ -94,7 +94,7 @@ def test_hilfe_ohne_hinterlegten_inhalt_wird_ehrlich_gemeldet(seeded):
 def test_versuch_bleibt_unveraendert_wenn_aufgabe_spaeter_geaendert_wird(seeded, sitzung):
     """Beweist: Ein Versuch speichert den Aufgabenstand; spätere Änderungen verändern ihn nicht (LE-11, RA-06)."""
     stu, ue = _uebung(seeded)
-    st, v = stu.post(f"/uebungen/{ue['id']}/versuche", {"aufgabe_id": seeded["aufgabe1"], "gegeben": "a"})
+    st, v = stu.post(f"/uebungen/{ue['id']}/versuche", {"aufgabe_id": seeded["aufgabe1"], "gegeben": ["a"]})
     assert st == 201
     versuch = sitzung.get(Versuch, v["versuch_id"])
     sitzung.refresh(versuch)
@@ -112,14 +112,14 @@ def test_fremder_versuch_ist_nicht_sichtbar(seeded):
     """Beweist: Eine Übung oder ein Versuch einer anderen Person ist nicht zugänglich (MO-03, eig.)."""
     stu, ue = _uebung(seeded)
     andere = seeded["login"]("student-a2", "org-a")
-    st, _ = andere.post(f"/uebungen/{ue['id']}/versuche", {"aufgabe_id": seeded["aufgabe1"], "gegeben": "b"})
+    st, _ = andere.post(f"/uebungen/{ue['id']}/versuche", {"aufgabe_id": seeded["aufgabe1"], "gegeben": ["b"]})
     assert st == 404
 
 
 def test_auswertung_nur_ueber_schluessel_ohne_modell(seeded, sitzung):
     """Beweist: Die Auswertung stammt aus dem Kern (herkunft.erzeugt_durch = kern) (RA-01, Abschnitt 4 Dok. 01)."""
     stu, ue = _uebung(seeded)
-    st, v = stu.post(f"/uebungen/{ue['id']}/versuche", {"aufgabe_id": seeded["aufgabe1"], "gegeben": "a"})
+    st, v = stu.post(f"/uebungen/{ue['id']}/versuche", {"aufgabe_id": seeded["aufgabe1"], "gegeben": ["a"]})
     versuch = sitzung.get(Versuch, v["versuch_id"])
     sitzung.refresh(versuch)
     assert versuch.herkunft["erzeugt_durch"] == "kern"

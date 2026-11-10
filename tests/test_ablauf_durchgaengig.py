@@ -20,7 +20,7 @@ def test_durchgaengiger_lernablauf(seeded, sitzung):
 
     # Hilfe, dann falsche Antwort mit Rückmeldung und Quelle
     stu.post(f"/uebungen/{ue['id']}/hilfe", {"aufgabe_id": seeded["aufgabe1"], "art": "hinweis"})
-    st, falsch = stu.post(f"/uebungen/{ue['id']}/versuche", {"aufgabe_id": seeded["aufgabe1"], "gegeben": "a",
+    st, falsch = stu.post(f"/uebungen/{ue['id']}/versuche", {"aufgabe_id": seeded["aufgabe1"], "gegeben": ["a"],
                                                              "selbsteinschaetzung": "unsicher"})
     assert st == 201 and falsch["richtig"] is False and falsch["hilfen_vorher"] == 1
     assert falsch["quellen"] and falsch["quellen"][0]["abschnitt_id"] in seeded["abschnitte"]
@@ -28,15 +28,16 @@ def test_durchgaengiger_lernablauf(seeded, sitzung):
 
     # Richtige Mehrfachauswahl ohne Hilfe
     st, richtig = stu.post(f"/uebungen/{ue['id']}/versuche", {"aufgabe_id": seeded["aufgabe2"],
-                                                              "gegeben": ["a", "b"]})
-    assert st == 201 and richtig["punkte"] == 2.0 and richtig["prozent"] == 100
+                                                              "gegeben": ["a", "b", "c"]})
+    assert st == 201 and richtig["punkte"] == 3.0 and richtig["prozent"] == 100
 
     # Rückfrage zum Ergebnis (Testadapter, SIMULIERT)
     st, gespraech = stu.post(f"/versuche/{falsch['versuch_id']}/gespraech",
                              {"frage": "Warum ist die Anzahl sechs?", "form": "rueckfrage"})
-    assert st == 200
-    assert gespraech["herkunft"]["herkunft"] == "SIMULIERT"
-    assert all(q["fachlich"] == "ungeprueft" for q in gespraech["quellen"])
+    assert st == 201
+    antwort = gespraech["antwort"]
+    assert antwort["herkunft"]["herkunft"] == "SIMULIERT"
+    assert all(q["fachlich"] == "ungeprueft" for q in antwort["quellen"])
 
     # Lernprofil: Hilfe zählt nicht als selbstständig, richtige Antwort ohne Hilfe zählt
     st, profil = stu.get(f"/module/{seeded['modul']}/lernprofil")

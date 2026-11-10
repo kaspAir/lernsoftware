@@ -1,0 +1,24 @@
+# Fachliche Referenzprüfung (synthetischer Referenzsatz, Inkrement 1.1)
+#
+# WICHTIG: Dieser Satz ist KEINE Abnahme durch eine Lehrperson. Er prüft, ob die Lösungsschlüssel
+# der Testdaten mit den fachlichen Angaben übereinstimmen. Die Eignung für reale Kurse ist damit
+# nicht belegt (Dokument 06, D-23). Die fachliche Prüfung durch eine Lehrperson steht aus.
+geprueft_von: "Autor des synthetischen Testsatzes (keine Lehrperson)"
+aufgaben:
+  - id: wuerfel_ergebnisraum
+    fachgebiet: "Wahrscheinlichkeit, Grundlagen"
+    frage: "Wie viele Ausgänge hat der Ergebnisraum eines sechsseitigen Würfels?"
+    optionen: {a: "fünf", b: "sechs", c: "zwölf"}
+    loesung: [b]
+  - id: wuerfel_unvereinbar
+    fachgebiet: "Wahrscheinlichkeit, unvereinbare Ereignisse"
+    frage: "Welche Ereignispaare beim Würfelwurf sind unvereinbar?"
+    optionen: {a: "eins und sechs", b: "gerade und ungerade", c: "eins und zwei"}
+    # Begründung: Ein Wurf ergibt genau eine Augenzahl. Jedes Paar aus unterschiedlichen Augenzahlen
+    # oder disjunkten Mengen kann nicht gleichzeitig eintreten.
+    loesung: [a, b, c]
+  - id: wuerfel_gegenereignis
+    fachgebiet: "Wahrscheinlichkeit, Gegenereignis"
+    frage: "Welches Ereignis ist das Gegenereignis zu «gerade Augenzahl»?"
+    optionen: {a: "ungerade Augenzahl", b: "drei", c: "eins oder zwei"}
+    loesung: [a]

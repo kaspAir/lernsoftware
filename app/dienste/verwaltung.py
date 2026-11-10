@@ -137,18 +137,23 @@ def zuweisen(session, cfg: dict, kontext: Kontext, modul_id: str, konto_id: str,
     if konto is None:
         raise nicht_gefunden("Konto")
     _mitgliedschaft_sicherstellen(session, kontext.lernorganisation_id, konto_id, "mitglied")
+    # Regel (Inkrement 1.1): Je Konto und Modul gibt es genau eine Rolle. Eine neue Zuweisung
+    # ersetzt die bisherige; der Wechsel wird im Nachweis mit der alten Rolle festgehalten.
     z = session.scalars(select(Modulzuweisung).where(Modulzuweisung.modul_id == modul.id,
-                                                     Modulzuweisung.konto_id == konto_id,
-                                                     Modulzuweisung.rolle == rolle)).first()
+                                                     Modulzuweisung.konto_id == konto_id)).first()
+    vorher = None
     if z is None:
         z = Modulzuweisung(lernorganisation_id=kontext.lernorganisation_id, modul_id=modul.id,
                            konto_id=konto_id, rolle=rolle, freigabe_delegiert=freigabe_delegiert)
         session.add(z)
     else:
+        vorher = {"rolle": z.rolle, "freigabe_delegiert": z.freigabe_delegiert}
+        z.rolle = rolle
         z.freigabe_delegiert = freigabe_delegiert
     session.flush()
     schreibe_nachweis(session, "zuweisung", kontext.lernorganisation_id, kontext.konto_id, modul.id,
-                      {"konto": konto.benutzername, "rolle": rolle, "freigabe_delegiert": freigabe_delegiert})
+                      {"konto": konto.benutzername, "rolle": rolle, "freigabe_delegiert": freigabe_delegiert,
+                       "vorher": vorher})
     return {"modul_id": modul.id, "konto": konto.benutzername, "rolle": rolle,
             "freigabe_delegiert": freigabe_delegiert}
 

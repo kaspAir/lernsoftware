@@ -1,35 +1,24 @@
 """JSON-Schnittstelle unter /api/v1 (Spez. §13). Jede Anfrage erhält eine eigene Datenbanksitzung;
-Fehler verwerfen die Sitzung vollständig (nichts Halbfertiges wird gespeichert).
+Fehler verwerfen die Sitzung vollständig.
 
-Anmeldung: Sitzungscookie. Schreibende Anfragen verlangen den Kopf `X-CSRF-Token` aus der Anmeldung.
+Anmeldung: Sitzungscookie (120 Minuten ab Anmeldung, app/sitzung.py). Schreibende Anfragen verlangen
+den Kopf `X-CSRF-Token`. Abgaben und Gesprächsfragen verlangen den Kopf `Idempotency-Key`
+(8 bis 64 Zeichen), damit Wiederholungen derselben Anfrage keinen zweiten Eintrag erzeugen.
 """
 import functools
 import secrets
-from contextlib import contextmanager
-from datetime import datetime
 
 from flask import Blueprint, current_app, jsonify, request, session as websitzung
 
-from .db import Basis
+from .db import Basis  # noqa: F401
 from .dienste import anmeldung, lernbegleiter, lernen, verwaltung
-from .fehler import FachFehler, nicht_gefunden, verboten
+from .fehler import FachFehler, verboten
 from .models import Konto
 from .rechte import Kontext, lade_kontext
+from .sitzung import sitzung_abgelaufen, sitzung_beginnt
+from .sitzung_db import sitzung
 
 blueprint = Blueprint("api", __name__)
-
-
-@contextmanager
-def sitzung():
-    s = current_app.config["SITZUNG"]()
-    try:
-        yield s
-        s.commit()
-    except Exception:
-        s.rollback()
-        raise
-    finally:
-        s.close()
 
 
 def _json() -> dict:
@@ -50,7 +39,20 @@ def _csrf_pruefen():
             raise FachFehler("csrf_fehlt", "Sicherheitsprüfung fehlgeschlagen. Bitte neu anmelden.", status=403)
 
 
+def _cfg():
+    return current_app.config["LERNCFG"]
+
+
+def sitzung_pruefen() -> None:
+    """Gilt für Web und API: Ablauf nach 120 Minuten ab Anmeldung (Festlegung 1.1)."""
+    if websitzung.get("konto_id") or websitzung.get("superadmin_id"):
+        if sitzung_abgelaufen(websitzung.get("angemeldet_am"), _cfg()["sicherheit"]["sitzung_minuten"]):
+            websitzung.clear()
+            raise FachFehler("sitzung_abgelaufen", "Die Sitzung ist abgelaufen. Bitte erneut anmelden.", status=401)
+
+
 def _kontext(s) -> Kontext:
+    sitzung_pruefen()
     konto_id = websitzung.get("konto_id")
     org_id = websitzung.get("lernorganisation_id")
     if not konto_id or not org_id:
@@ -59,13 +61,19 @@ def _kontext(s) -> Kontext:
 
 
 def _superadmin(s) -> str:
+    sitzung_pruefen()
     konto_id = websitzung.get("superadmin_id")
     if not konto_id:
         raise FachFehler("nicht_angemeldet", "Bitte zuerst anmelden.", status=401)
     konto = s.get(Konto, konto_id)
-    if konto is None or not konto.ist_superadmin:
-        raise verboten()
+    if konto is None or konto.status != "aktiv" or not konto.ist_superadmin:
+        websitzung.clear()
+        raise FachFehler("nicht_angemeldet", "Die Sitzung ist nicht mehr gültig.", status=401)
     return konto_id
+
+
+def _schluessel() -> str:
+    return request.headers.get("Idempotency-Key", "")
 
 
 def endpunkt(funktion):
@@ -73,22 +81,18 @@ def endpunkt(funktion):
     @functools.wraps(funktion)
     def huelle(*args, **kwargs):
         _csrf_pruefen()
-        with sitzung() as s:
+        with sitzung(current_app) as s:
             ergebnis, status = funktion(s, *args, **kwargs)
         return jsonify(ergebnis), status
     return huelle
 
 
-def _cfg():
-    return current_app.config["LERNCFG"]
-
-
-# ---------- Anmeldung ----------
+# ---------- Anmeldung und Zustand ----------
 
 @blueprint.post("/auth/anmelden")
 def anmelden_route():
     daten = _json()
-    with sitzung() as s:
+    with sitzung(current_app) as s:
         ergebnis = anmeldung.anmelden(s, _cfg(), daten.get("kurzname"), daten.get("benutzername", ""),
                                       daten.get("passwort", ""))
     websitzung.clear()
@@ -97,8 +101,10 @@ def anmelden_route():
     else:
         websitzung["konto_id"] = ergebnis["konto_id"]
         websitzung["lernorganisation_id"] = ergebnis["lernorganisation_id"]
+    websitzung["angemeldet_am"] = sitzung_beginnt()
     websitzung["csrf"] = secrets.token_urlsafe(24)
-    return jsonify({**ergebnis, "csrf": websitzung["csrf"]}), 200
+    return jsonify({**ergebnis, "csrf": websitzung["csrf"],
+                    "sitzung_endet_nach_minuten": _cfg()["sicherheit"]["sitzung_minuten"]}), 200
 
 
 @blueprint.post("/auth/abmelden")
@@ -106,6 +112,13 @@ def abmelden_route():
     _csrf_pruefen()
     websitzung.clear()
     return jsonify({"status": "abgemeldet"}), 200
+
+
+@blueprint.get("/modell")
+def modell_info():
+    m = current_app.config["MODELL"]
+    return jsonify({"herkunft": m.herkunft, "modellname": m.modellname,
+                    "anzeige": current_app.config["MODELL_ANZEIGE"]}), 200
 
 
 # ---------- Super-Admin ----------
@@ -213,6 +226,7 @@ def unterlage_aendern(s, unterlage_id):
 @blueprint.post("/unterlagen/<unterlage_id>/freigabe")
 @endpunkt
 def unterlage_freigabe(s, unterlage_id):
+    from datetime import datetime
     k = _kontext(s)
     d = _json()
     frist = d.get("auflage_frist")
@@ -257,12 +271,19 @@ def uebung_erzeugen(s, modul_id):
     return lernen.uebung_erzeugen(s, _cfg(), k, modul_id, list(d.get("lektion_ids", []))), 201
 
 
+@blueprint.get("/uebungen/<uebung_id>")
+@endpunkt
+def uebung_lesen(s, uebung_id):
+    k = _kontext(s)
+    return lernen.uebung_sicht(s, k, uebung_id), 200
+
+
 @blueprint.post("/uebungen/<uebung_id>/hilfe")
 @endpunkt
 def hilfe(s, uebung_id):
     k = _kontext(s)
     d = _json()
-    return lernen.hilfe_anfordern(s, k, uebung_id, d.get("aufgabe_id", ""), d.get("art", "")), 200
+    return lernen.hilfe_anfordern(s, _cfg(), k, uebung_id, d.get("aufgabe_id", ""), d.get("art", "")), 200
 
 
 @blueprint.post("/uebungen/<uebung_id>/versuche")
@@ -270,8 +291,16 @@ def hilfe(s, uebung_id):
 def versuch(s, uebung_id):
     k = _kontext(s)
     d = _json()
-    return lernen.versuch_abgeben(s, _cfg(), k, uebung_id, d.get("aufgabe_id", ""), d.get("gegeben"),
-                                  d.get("selbsteinschaetzung")), 201
+    ergebnis = lernen.versuch_abgeben(s, _cfg(), k, uebung_id, d.get("aufgabe_id", ""), d.get("gegeben"),
+                                      d.get("selbsteinschaetzung"), _schluessel())
+    return ergebnis, (200 if ergebnis.get("wiederholt") else 201)
+
+
+@blueprint.get("/versuche/<versuch_id>")
+@endpunkt
+def versuch_lesen(s, versuch_id):
+    k = _kontext(s)
+    return lernen.versuch_sicht(s, k, versuch_id), 200
 
 
 @blueprint.post("/versuche/<versuch_id>/gespraech")
@@ -279,8 +308,16 @@ def versuch(s, uebung_id):
 def gespraech(s, versuch_id):
     k = _kontext(s)
     d = _json()
-    return lernbegleiter.gespraech_fuehren(s, _cfg(), current_app.config["MODELL"], k, versuch_id,
-                                           d.get("frage"), d.get("form", "erklaerung")), 200
+    ergebnis = lernbegleiter.gespraech_fuehren(s, _cfg(), current_app.config["MODELL"], k, versuch_id,
+                                               d.get("frage"), d.get("form", "erklaerung"), _schluessel())
+    return ergebnis, (200 if ergebnis.get("wiederholt") else 201)
+
+
+@blueprint.get("/abschnitte/<abschnitt_id>")
+@endpunkt
+def abschnitt(s, abschnitt_id):
+    k = _kontext(s)
+    return lernen.abschnitt_sicht(s, k, abschnitt_id), 200
 
 
 @blueprint.get("/module/<modul_id>/lernprofil")

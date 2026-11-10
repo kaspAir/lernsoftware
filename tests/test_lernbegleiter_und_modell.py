@@ -42,7 +42,7 @@ class FalscherAdapter:
 
 def _versuch_id(seeded, sitzung_stu):
     st, ue = sitzung_stu.post(f"/module/{seeded['modul']}/uebungen", {"lektion_ids": [seeded["lektion"]]})
-    st, v = sitzung_stu.post(f"/uebungen/{ue['id']}/versuche", {"aufgabe_id": seeded["aufgabe1"], "gegeben": "a"})
+    st, v = sitzung_stu.post(f"/uebungen/{ue['id']}/versuche", {"aufgabe_id": seeded["aufgabe1"], "gegeben": ["a"]})
     return v["versuch_id"]
 
 
@@ -51,7 +51,7 @@ def _lauf(seeded, adapter, form="erklaerung", frage="Warum?"):
     stu = seeded["login"]("student-a", "org-a")
     vid = _versuch_id(seeded, stu)
     status, daten = stu.post(f"/versuche/{vid}/gespraech", {"frage": frage, "form": form})
-    return status, daten
+    return status, daten.get("antwort", daten) if isinstance(daten, dict) else daten
 
 
 def _mit_adapter(seeded, adapter):
@@ -65,7 +65,7 @@ def test_fremde_quelle_wird_abgelehnt(seeded):
                                           "quellen": [{"abschnitt_id": "gibt-es-nicht", "aussage": "x"}],
                                           "luecke": None, "sicherheitsgrad": "sicher", "annahmen": []}))
     status, daten = _lauf(seeded, None)
-    assert status == 200
+    assert status == 201
     assert "Erfundene" not in daten["text"]
     assert "keine belegte Antwort" in daten["text"]
 
@@ -108,14 +108,14 @@ def test_blockierte_pseudonymisierung_sendet_nichts_und_erfindet_nichts(seeded):
     _mit_adapter(seeded, FalscherAdapter(PseudonymisierungBlockiert([{"befund_id": "bf"}], "vg")))
     status, daten = _lauf(seeded, None)
     assert "Entscheidung" in daten["text"]
-    assert daten["herkunft"]["herkunft"] == "SIMULIERT"
+    assert daten["herkunft"]["erzeugt_durch"] == "system"
 
 
 def test_modell_nicht_erreichbar_ergibt_klare_meldung(seeded):
     """Beweist: Modellausfall führt zur ehrlichen Meldung, nicht zu einer erfundenen Erklärung (Spez. §12)."""
     _mit_adapter(seeded, FalscherAdapter(ModellFehler("Netz weg")))
     status, daten = _lauf(seeded, None)
-    assert status == 200
+    assert status == 201
     assert "nicht erreichbar" in daten["text"]
     assert daten["quellen"] == []
 
@@ -124,7 +124,7 @@ def test_ungueltiges_schema_wird_nach_festen_wiederholungen_abgebrochen(seeded):
     """Beweist: Schema-Fehler führen zu Wiederholung mit fester Grenze, danach zur Standardantwort (TC-BEG-02)."""
     _mit_adapter(seeded, FalscherAdapter({"unvollstaendig": True}))
     status, daten = _lauf(seeded, None)
-    assert "nicht erreichbar" in daten["text"]
+    assert "nicht sicher geprüft" in daten["text"]
 
 
 def test_simulierte_antwort_ist_als_solche_gekennzeichnet(seeded):

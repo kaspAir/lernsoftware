@@ -71,8 +71,9 @@ class Modul(Mixin, Basis):
 
 
 class Modulzuweisung(Mixin, Basis):
+    """Genau eine Modulrolle je Konto und Modul (Regel in Dokument 03 §2.1)."""
     __tablename__ = "modulzuweisung"
-    __table_args__ = (UniqueConstraint("modul_id", "konto_id", "rolle"),)
+    __table_args__ = (UniqueConstraint("modul_id", "konto_id"),)
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=neue_id)
     lernorganisation_id: Mapped[str] = mapped_column(ForeignKey("lernorganisation.id"), index=True)
     modul_id: Mapped[str] = mapped_column(ForeignKey("modul.id"), index=True)
@@ -187,8 +188,10 @@ class Hilfeereignis(Mixin, Basis):
 
 
 class Versuch(Mixin, Basis):
-    """Eine Abgabe. Nach Abgabe unveränderlich (Spez. §8)."""
+    """Eine Abgabe. Nach Abgabe unveränderlich (Spez. §8). Doppelabgaben über den Schlüssel
+    (konto_id, idempotenz_schluessel) ausgeschlossen."""
     __tablename__ = "versuch"
+    __table_args__ = (UniqueConstraint("konto_id", "idempotenz_schluessel"),)
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=neue_id)
     lernorganisation_id: Mapped[str] = mapped_column(ForeignKey("lernorganisation.id"), index=True)
     konto_id: Mapped[str] = mapped_column(ForeignKey("konto.id"), index=True)
@@ -196,6 +199,8 @@ class Versuch(Mixin, Basis):
     aufgabe_id: Mapped[str] = mapped_column(ForeignKey("aufgabe.id"), index=True)
     aufgabe_version: Mapped[int] = mapped_column(Integer)
     aufgabe_snapshot: Mapped[dict] = mapped_column(JSON)     # Kopie des Aufgabenstands (Versuchstreue)
+    versuchsnummer: Mapped[int] = mapped_column(Integer, default=1)  # 1., 2., … Abgabe zu dieser Aufgabe
+    idempotenz_schluessel: Mapped[str | None] = mapped_column(String(64), nullable=True)
     gegeben: Mapped[list | str | None] = mapped_column(JSON, nullable=True)
     punkte: Mapped[float] = mapped_column(Numeric(8, 2))
     maximum: Mapped[float] = mapped_column(Numeric(8, 2))
@@ -220,8 +225,11 @@ class Wiederholungszustand(Mixin, Basis):
 
 
 class Nachricht(Mixin, Basis):
-    """Lernbegleiter-Verlauf (BS-01, BS-07)."""
+    """Lernbegleiter-Verlauf (BS-01, BS-07). Fragen sind über den Schlüssel idempotent."""
     __tablename__ = "nachricht"
+    __table_args__ = (UniqueConstraint("konto_id", "anfrage_schluessel"),)
+    anfrage_schluessel: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    bezug_id: Mapped[str | None] = mapped_column(String(36), nullable=True)  # Antwort -> Frage
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=neue_id)
     lernorganisation_id: Mapped[str] = mapped_column(ForeignKey("lernorganisation.id"), index=True)
     konto_id: Mapped[str] = mapped_column(ForeignKey("konto.id"), index=True)
@@ -231,7 +239,7 @@ class Nachricht(Mixin, Basis):
     text: Mapped[str] = mapped_column(Text)
     quellen: Mapped[list] = mapped_column(JSON, default=list)
     sicherheitsgrad: Mapped[str | None] = mapped_column(String(16), nullable=True)
-    herkunft: Mapped[dict] = mapped_column(JSON, default=dict)
+    herkunft: Mapped[dict] = mapped_column(JSON, default=dict)  # herkunft: echt | SIMULIERT | kern | system
     zeitpunkt: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=jetzt)
 
 

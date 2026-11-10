@@ -1,0 +1,24 @@
+name: Tests
+
+# Automatischer, reproduzierbarer Testlauf ohne Zugangsdaten und ohne echten Modellanbieter.
+# Alle Testdaten sind synthetisch; der Live-Test gegen den Vorschaltdienst wird übersprungen
+# (VORSCHALT_LIVE ist nicht gesetzt) und im Protokoll als nicht geprüft ausgewiesen.
+
+on:
+  push:
+    branches: [develop, test, integration, main]
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: python -m pip install -r requirements.txt
+      - name: Technische und fachliche Tests
+        env:
+          LERNSOFTWARE_PROTOKOLL: "0"
+        run: python -m pytest -q
