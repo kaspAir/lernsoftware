@@ -17,7 +17,7 @@ Jede Zeile trägt eine Kennung. Kennungen werden nie umgewidmet. Der Status ist 
 | D-02 | **Super-Admin und Mandantentrennung** | vorläufig | Arbeitsregel gemäss Auftrag: Super-Admin legt Lernorganisationen an und richtet die Erstadministration ein; er sieht Registrierungsdaten (Name, Kurzname, Status, Erstelldatum). **Kein** Leserecht auf Unterlagen, Aufgaben, Versuche, Gespräche, Lernprofile. Konflikt mit RA-08: siehe B-01. | Plattformregister ist eigene Tabelle ohne Verknüpfung auf Inhalte |
 | D-03 | **Assistenz** | vorläufig | Assistenz darf hochladen, Lektionen pflegen und Lernaufgaben vorbereiten (Modul). Fachliche Freigabe und Ebene-C-Prüfung sind **eigene Berechtigung** `freigabe`; Standard bei Dozierenden; Delegation an Assistenz durch Admin per Zuweisung `freigabe_delegiert` (Nachweis). | Rollenmodell, Spez. §2 |
 | D-04 | **Freigabe von Übungsaufgaben** | vorläufig (Auftrag) | Unmittelbare Erzeugung von Übungsaufgaben ist Produktziel. Drei Ebenen: A Unterlage fachlich freigegeben; B Aufgabe technisch geprüft (automatisch); C Aufgabe fachlich geprüft (Lehrperson). Ebene B darf nie als C erscheinen. Prüfungsrahmen kann «nur C» verlangen. Meldungen setzen sofort aus; Entscheid durch Dozierende mit Nachweis. Konflikt mit Suite-Norm: keiner gefunden (RA-05 gilt für Unterlagen und Freigaben; die Ebene B ist keine Freigabe, sondern ein Prüfstatus). Begründung und Prüfung in Dok. 01 §4 und Spez. §5.3. | Prüfstatus, Sichtbarkeit |
-| D-05 | **Vorschaltdienst (Pseudonymisierung)** | festgelegt; Dienst läuft (develop, 2026-11-10), Anwendung `lernsoftware` noch **nicht registriert** (siehe 07 §4) | Der Dienst `C:\Projekte\Pseudonymisierung` existiert, ist laut seinem README «gebaut und getestet, Erstinstallation auf dem Host läuft». Schnittstelle geprüft gegen `docs/API.md` und `docs/ANBINDUNG.md`. Prüfstand 2026-11-10: `GET http://127.0.0.1:8040/pseudo/v1/health` liefert Verbindungsabbruch (curl Exit 7); der Live-Test ist im Protokoll als **nicht bestanden** ausgewiesen (`docs/nachweise/`). Der Dienst wurde nicht gestartet, weil er einen Tresor-Schlüssel braucht und in sein eigenes Datenverzeichnis schreibt. Umsetzung: Adapter nach API.md; Tests gegen Testadapter; ein Live-Test wird nur ausgeführt, wenn der Dienst erreichbar ist, und als solcher im Protokoll ausgewiesen. | Modellzugang nur über Adapter; Live-Status im Testprotokoll |
+| D-05 | **Vorschaltdienst (Pseudonymisierung)** | festgelegt; Dienst lief am 2026-11-10 im Modus develop (Health bestanden); Anwendung `lernsoftware` noch **nicht registriert** (siehe 07 §5) |
 | D-06 | **Änderung freigegebener Unterlage** | festgelegt | Unterlage → `in_pruefung`; abhängige Aufgaben für Studierende ausgeblendet, nicht gelöscht; Versuche bleiben erhalten (LE-11). Die Alternative «Aufgabe bleibt sichtbar» scheidet aus, weil RA-05/NR-05 den freigegebenen Zustand bei geändertem Inhalt verbieten. | Spez. §4.2, §5.3 |
 | D-07 | **Modellanbieter und Verarbeitungsort** | offen | Der Vorschaltdienst spricht Anthropic und Voyage; das Dokument des Dienstes nennt «LLM- und Embedding-Dienste im Ausland». Für Lernende mit personenbezogenen Gesprächen ist der Verarbeitungsort rechtlich relevant (revDSG). **Empfehlung:** Vor produktiver Nutzung Auftragsbearbeitung und Verarbeitungsort klären. **Auswirkung:** Blockiert nur den Produktivbetrieb mit echten Lernenden, nicht die Entwicklung mit synthetischen Daten. | Produktivbetrieb |
 | D-08 | **Barrierefreiheit** | vorläufig | WCAG 2.2 AA als Arbeitsziel. Rechtliche Vorgabe der Organisation offen. | Prüfaufwand |
@@ -37,6 +37,20 @@ Jede Zeile trägt eine Kennung. Kennungen werden nie umgewidmet. Der Status ist 
 | D-22 | **Prüfungsrahmen und Schwierigkeitsregler: fehlende Vorlage** | offen | **Nicht vorhanden in den Projektunterlagen:** (a) der «bereits bereitgestellte Prüfungsrahmen» des Auftraggebers; (b) die «Idee zum Schwierigkeitsregler» mit Stufenbeschreibungen. Vorhanden und genutzt: nur die Stufenbezeichnungen einfach · mittel · schwer · sehr schwer. **Fehlende Angaben:** Themengewichtung, Aufgabenformen und Anteile, Punkteverteilung und Maximum, Zeitlimit, Hilfsmittel, Anzahl, Zuordnung Stufe → Dimensionen. Die Struktur ist definiert (Spez. §5.4, §9.2); die Inhalte bleiben leer. **Auswirkung:** blockiert nur Inkrement 3 (Prüfungssimulation), nicht Inkrement 1–2. | Inkr. 3 |
 | D-23 | **Eigene Testunterlagen** | vorläufig | Synthetische Unterlage «Grundlagen Wahrscheinlichkeit (Testkurs)» im Repository unter `tests/daten/`, eindeutig als synthetisch gekennzeichnet. Keine Aussage über Eignung für reale Kurse möglich. | Tests |
 
+## 1a · Festlegungen Inkrement 1.1 (2026-11-10)
+
+| ID | Thema | Status | Festlegung | Auswirkung |
+|---|---|---|---|---|
+| D-24 | **Sitzungsdauer** | festgelegt | 120 Minuten **ab Anmeldung** (absolut), nicht ab letzter Aktivität. Begründung: eindeutig prüfbare Obergrenze ohne serverseitige Sitzungsliste; Entzug durch Deaktivierung wirkt trotzdem sofort. | app/sitzung.py, Spez. §3.2 |
+| D-25 | **Modulrolle** | festgelegt | Je Konto und Modul **genau eine** Rolle. Eine neue Zuweisung ersetzt die bisherige und wird im Nachweis mit der alten Rolle festgehalten. Begründung: Mehrfachrollen würden bisherige Rechte stillschweigend verändern. | Spez. §3.2, Dokument 01 MO-02 |
+| D-26 | **Antwortformat** | festgelegt | Auswahl: Liste gültiger Option-IDs (bei Einzelauswahl genau eine); Lücke: Text bis 200 Zeichen. Alles andere wird mit Begründung abgewiesen. | Spez. §5.5, kern/antwort.py |
+| D-27 | **Doppelabgabe** | festgelegt | Jede Abgabe und jede Gesprächsfrage trägt einen Anfrage-Schlüssel. Gleicher Schlüssel → gespeicherte Antwort, kein neuer Eintrag, keine Fortschreibung. Parallele Anfragen scheitern an der Eindeutigkeit der Datenbank. | Spez. §8, Dokument 01 LE-11 |
+| D-28 | **Hilfe und frühere Lösung** | festgelegt | Eine vor der Abgabe angezeigte Hilfe oder eine frühere Auswertung derselben Aufgabe macht die Leistung nicht selbstständig. | Spez. §6.1 |
+| D-29 | **Quellen für neue Erklärungen** | festgelegt | Eine neue Erklärung ist nur zulässig, wenn die zitierten Abschnitte der aktuell freigegebenen Fassung entsprechen. Bei geänderter Fassung entsteht keine Erklärung; der Versuch bleibt lesbar. | Spez. §10, A-14 |
+| D-30 | **Modellkontext** | festgelegt | Höchstens 6 letzte Nachrichten, 6 000 Zeichen insgesamt. Gekürzt wird der Verlauf, nie stillschweigend der Inhalt. Keine Namen oder Kennungen der Person. | Spez. §10 |
+| D-31 | **Modellmodus** | festgelegt | Umgebungsvariable `LERNSOFTWARE_MODELL` (sonst `config/basis.yaml`). Ungültige Werte brechen den Start ab. Der wirksame Modus steht im Log, in `/healthz` und oben in der Oberfläche. | app/__init__.py |
+| D-32 | **Test-Referenzsatz** | festgelegt | Der Referenzsatz in `tests/fachlich/` ist synthetisch und ersetzt keine Abnahme durch eine Lehrperson. | Dokument 04 §12 |
+
 ## 2 · Architekturentscheide (ADR-L)
 
 Jeder Entscheid nennt Kontext, Entscheidung und Folgen. Ein ersetzter Entscheid bleibt mit Verweis stehen.
@@ -46,7 +60,7 @@ Jeder Entscheid nennt Kontext, Entscheidung und Folgen. Ein ersetzter Entscheid 
 - **Status:** festgelegt (bestätigt durch die Prüfung der vorhandenen Projekte am 2026-11-10: Flask-basierte Produkte und Vorschaltdienst laufen in der Suite).
 
 ### ADR-L-002 · Datenbank
-- **Entscheidung:** PostgreSQL 16 mit RLS ist Zielsystem (ADR-L-006). Lokale Entwicklung über Docker-Container. Für den Schnelleinstieg ohne Docker ist SQLite als Entwicklungsdatenbank vorgesehen; **Abweichung A-1** (siehe 07): ohne RLS, Mandantentrennung dort nur durch Code-Struktur und Tests.
+- **Entscheidung:** PostgreSQL 16 mit RLS ist Zielsystem (ADR-L-006). **Umsetzung in Inkrement 5**, einheitlich mit Dokument 07 §1. Lokale Entwicklung über Docker-Container. Für den Schnelleinstieg ohne Docker ist SQLite als Entwicklungsdatenbank vorgesehen; **Abweichung A-1** (siehe 07): ohne RLS, Mandantentrennung dort nur durch Code-Struktur und Tests.
 - **Status:** festgelegt mit Abweichung A-1.
 
 ### ADR-L-003 · Oberfläche
@@ -64,7 +78,7 @@ Jeder Entscheid nennt Kontext, Entscheidung und Folgen. Ein ersetzter Entscheid 
 
 ### ADR-L-006 · Mandantentrennung
 - **Entscheidung:** Jedes mandantenbezogene Objekt trägt `lernorganisation_id`. Zielsystem: PostgreSQL Row-Level-Security mit Mandantenkontext je Verbindung. Im Inkrement 1: Zugriffe laufen über eine Repository-Schicht, die jede Abfrage an einen Mandantenkontext bindet (Code-Struktur); **kein** Abfrage-Helfer ohne Mandant. Tests prüfen das (Testkonzept §4.1).
-- **Status:** festgelegt; RLS-Umsetzung ist Inkrement 2 (Abweichung A-2 in 07).
+- **Status:** festgelegt; RLS-Umsetzung ist Inkrement 5 (Abweichung A-2 in 07; einheitlich mit ADR-L-002).
 
 ### ADR-L-007 · Wiederholungsplanung
 - **Entscheidung:** SM-2-Variante (Spez. §6.3), austauschbar. Kompetenzeinschätzung ist davon getrennt (Spez. §6.1–6.2).

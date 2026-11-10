@@ -450,3 +450,49 @@ Inkrement 3 ergänzt Prüfungsrahmen und Testprüfungen; Inkrement 4 Erscheinung
 - Konto-Löschung: Versuche und Gespräche werden gelöscht oder pseudonymisiert; Nachweise mit Personenbezug werden durch ein Pseudonym ersetzt. Aufbewahrungspflichten sind rechtlich offen (D-09).
 - Protokolle enthalten keine Passwörter, Sitzungs-IDs oder vollständige Versuchstexte.
 - Modellaufrufe erhalten keine Klarnamen (10).
+
+---
+
+## 15 · Festlegungen Inkrement 1.1 (Ergänzung zu den Abschnitten oben)
+
+**§2.1 Modulrolle (D-25).** Je Konto und Modul gibt es genau eine Zuweisung. Eine neue Zuweisung ersetzt die alte; der Nachweis `zuweisung` enthält die bisherige Rolle unter `vorher`. Die Organisationsrolle `admin` gilt unabhängig davon.
+
+**§3.2 Sitzung (D-24).** Die Sitzung endet 120 Minuten nach der Anmeldung (`app/sitzung.py`). Bei jeder Anfrage werden Konto, Organisation und Modulzuweisung neu geladen (`rechte.lade_kontext`). Deaktivierung wirkt damit sofort, auch bei bestehender Sitzung.
+
+**§5.5 Antwortformat (D-26).**
+
+| Fragetyp | Format | Fehler |
+|---|---|---|
+| `single_choice` | Liste mit genau einer gültigen Option-ID, z. B. `["antwort_b"]` | nicht Liste; keine oder mehrere Optionen; unbekannte ID |
+| `multiple_choice` | Liste mit mindestens einer eindeutigen, gültigen Option-ID | leere Liste; Duplikate; unbekannte ID |
+| `luecke` | Text, 1 bis 200 Zeichen nach dem Trimmen | Liste oder Zahl; leer; zu lang |
+
+Die Prüfung erfolgt in `kern/antwort.py`, bevor eine Abgabe entsteht. Fehler: HTTP 422, Code `antwort_ungueltig`, verständlicher Text.
+
+**§6.1 Hilfe und frühere Lösung (D-28).** Eine Hilfe, die vor einer Abgabe angezeigt wurde, wird am Versuch vermerkt (`hilfen`). Hat dieselbe Person die Aufgabe schon einmal abgegeben, enthält jede weitere Abgabe zusätzlich den Eintrag `loesung_gesehen`. Beide Fälle zählen nicht als selbstständige Leistung.
+
+**§8 Abgabe und Gesprächsfrage: Anfrage-Schlüssel (D-27).** Schreibende Abgaben (`POST /uebungen/{id}/versuche`) und Fragen (`POST /versuche/{id}/gespraech`) verlangen den Kopf `Idempotency-Key` (8 bis 64 Zeichen aus `A–Z a–z 0–9 _ -`). Die Eindeutigkeit `(konto_id, idempotenz_schluessel)` bzw. `(konto_id, anfrage_schluessel)` ist in der Datenbank festgelegt.
+
+- Derselbe Schlüssel für dieselbe Aufgabe liefert die gespeicherte Auswertung mit `wiederholt: true` und Status 200. Es wird weder ein Versuch noch eine Wiederholungsplanung neu geschrieben.
+- Derselbe Schlüssel für eine andere Aufgabe oder Übung: HTTP 409, `schluessel_wiederverwendet`.
+- Parallele Anfragen mit demselben Schlüssel: Die zweite scheitert an der Eindeutigkeit, wird zurückgerollt und liefert die gespeicherte Auswertung.
+- Eine bewusste neue Bearbeitung hat einen neuen Schlüssel und erhält die nächste `versuchsnummer`. Die Oberfläche kennzeichnet sie als «Erneute Bearbeitung».
+
+**§10 Modellkontext und Validierung (D-30).** Der Auftrag enthält: Aufgabentext und Version zum Zeitpunkt der Abgabe, Optionen mit Text, Lösung und Begründung, verwendete Hilfen, die letzten 6 Nachrichten des Gesprächs, die Evidenzlage des Lernziels und die zulässigen Abschnitte. Die Obergrenze beträgt 6 000 Zeichen; zuerst wird der Verlauf gekürzt. Personenbezogene Angaben fehlen.
+
+Jede Modellausgabe wird vor der Verarbeitung vollständig geprüft (`kern/modellpruefung.py`): Pflichtfelder, keine unbekannten Felder, zulässige Form und Sicherheitsgrade, Quellenobjekte (höchstens 5, nur übergebene Abschnitts-IDs), Annahmen als Liste von höchstens 5 Texten, Lücke als Text oder `null`, keine Bewertungssprache. Ungültige Ausgaben führen zu einer Wiederholung (`schema_wiederholungen`), danach zu einer Systemmeldung. Inhaltliche Verstöße (Quelle, Bewertung) werden ohne Wiederholung abgelehnt und mit Kennung nachgewiesen (NR-02, BS-06).
+
+Herkunft je Antwort: `echt` (Vorschaltdienst), `SIMULIERT` (Testadapter), `system` (Fehler, Blockade) oder `kern`.
+
+**§10.1 Zulässigkeit einer neuen Erklärung (D-29).** Eine neue Erklärung entsteht nur, wenn alle zitierten Abschnitte der aktuell freigegebenen Fassung entsprechen. Andernfalls antwortet das System mit einer Begründung; der bisherige Verlauf bleibt erhalten, und es erfolgt kein Modellaufruf.
+
+**§13 Ergänzte Schnittstellen (Inkrement 1.1).**
+
+| Methode | Pfad | Zweck |
+|---|---|---|
+| GET | `/uebungen/{id}` | Übung mit aktuellem Stand je Aufgabe (Verfügbarkeit, offene Hilfe, Versuche) |
+| GET | `/versuche/{id}` | dauerhaft abrufbare Versuchssicht mit Verlauf und Quellen |
+| GET | `/abschnitte/{id}` | zitierter Abschnitt mit historischem Stand und aktuellem Status |
+| GET | `/modell` | wirksamer Modellmodus |
+
+Die Ausgabe von `POST /versuche/{id}/gespraech` enthält `frage_id`, `frage`, `antwort` (mit `herkunft`, `quellen`, `sicherheitsgrad`, `annahmen`, `luecke`) und `wiederholt`.

@@ -351,3 +351,21 @@ Stand 2026-11-10. Die Funktionsnamen stehen in `tests/`. «Teil» bedeutet: Der 
 Zusätzlich im Inkrement 1 (ohne TC-Kennung): Vertragstests des Vorschaltdienstes (Kopfzeilen, 409, 502, 503, Netzfehler), Durchgängigkeit des Lernablaufs (test_ablauf_durchgaengig), Web-Oberfläche (test_web_oberflaeche).
 
 **Offen für Inkrement 2:** TC-SEC-Werkzeuge (bandit, pip-audit) und ein automatischer Barrierefreiheits-Scan (axe-core) gehören in die CI, sobald eine Pipeline besteht.
+
+---
+
+## 13 · Testfälle Inkrement 1.1 (Zuordnung)
+
+| Bereich | Datei | Schwerpunkt |
+|---|---|---|
+| Antwortformat (Punkt 1) | test_antwort_hilfe_abgabe | Einzelauswahl mit `antwort_b`, Typen, unbekannte Option, Lücke, Browser |
+| Hilfen (Punkt 2) | test_antwort_hilfe_abgabe | Anzeige, Neuladen, Vermerk, fehlende Hilfe |
+| Abgabe (Punkt 3) | test_antwort_hilfe_abgabe, test_abnahme_ablauf | Wiederholung, Hilfe bei Wiederholung, Doppelklick, parallele Anfragen |
+| Berechtigung (Punkt 4) | test_zugriff_sitzung_rollen | Fassungsänderung, gesperrte Quelle, Entzug, deaktiviertes Konto, Organisation, Super-Admin |
+| Versuchssicht (Punkt 5) | test_gespraech_und_modellausgabe, test_abnahme_ablauf | mehrere Rückfragen, Neuanmeldung, Kontext, Quellenansicht |
+| Modellausgabe (Punkt 6) | test_gespraech_und_modellausgabe | 13 ungültige Fälle, `annahmen=42`, Herkunft |
+| Sitzung und Rollen (Punkt 7) | test_zugriff_sitzung_rollen, test_demo_und_start | 120-Minuten-Grenze, eine Modulrolle, Modellmodus |
+| Start und Demo (Punkt 8) | test_demo_und_start | frische Demo, Zeiger, Login, Modusanzeige |
+| Fachliche Referenz (Punkt 9) | tests/fachlich | Lösungsschlüssel der Würfelaufgaben |
+
+Ergebnis: 135 bestanden, 0 nicht bestanden, 1 Live-Test nicht geprüft (Protokoll `docs/nachweise/testprotokoll-20261110T142413Z.json`).

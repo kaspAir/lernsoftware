@@ -273,3 +273,19 @@ Abnahme erfolgt, wenn:
 | `ADR-L…` | Architekturentscheid des Projekts (06) |
 | `TC-…` | Testfall (04) |
 | `B-…` | Befund an die Normen (06) |
+
+## 12 · Änderungsprotokoll 1.0 → 1.1 (Inkrement 1.1)
+
+| Kennung | Änderung | Grund |
+|---|---|---|
+| MO-02 | Eine Modulrolle je Konto und Modul; Wechsel mit Nachweis | Punkt 7, D-25 |
+| LE-04, LE-12 | Hilfe und frühere Lösung machen die Leistung nicht selbstständig | Punkt 2/3, D-28 |
+| LE-11 | Versuche bleiben bei Änderungen unverändert; Versuchssicht dauerhaft | Punkt 5 |
+| PR-04 | Hinweis wirkt bei der nächsten Abgabe und wird angezeigt | Punkt 2 |
+| PR-06 | Abgabe mit Anfrage-Schlüssel; Wiederholung ohne Neueintrag | Punkt 3, D-27 |
+| IN-07, LE-06 | Quellenstatus wird je Anfrage geprüft; neue Erklärung nur mit aktueller Fassung | Punkt 4, D-29 |
+| BE-07 | Sitzung 120 Minuten ab Anmeldung | Punkt 7, D-24 |
+| BS-01, BS-02 | Mehrere Rückfragen; Modellkontext begrenzt und personenfrei | Punkt 5, D-30 |
+| BS-04, BS-06 | Modellausgaben vollständig validiert; Herkunft unterscheidbar | Punkt 6 |
+| NF-07 | Modellmodus über `LERNSOFTWARE_MODELL`, angezeigt | Punkt 8, D-31 |
+| (neu) Antwortformat | einheitliches Format für Auswahl und Lücke | Punkt 1, D-26 |

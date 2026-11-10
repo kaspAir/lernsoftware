@@ -8,7 +8,7 @@ Webbasierte Lernumgebung für Lernende an Hochschulen, Schulen und Organisatione
 - Geplante Adresse: https://lernen.kaspair.ch/ (Zertifikat in Erstellung)
 - Sprache: Deutsch, Schweizer Schreibweise
 
-**Status:** Inkrement 1 (lokaler Lernablauf) umgesetzt und getestet — mit simuliertem Modell. Ein Lauf mit einem echten Modell und der Live-Test gegen den Vorschaltdienst sind offen. Was dokumentiert, implementiert, simuliert oder mit echtem Modell geprüft ist, steht in [07 · Umsetzung und Nachweise](docs/07_Umsetzung_und_Nachweise.md).
+**Status:** Inkrement 1.1 («verlässlicher Lernablauf») umgesetzt und getestet — mit simuliertem Modell (135 bestanden, siehe 07 §4). Ein Lauf mit einem echten Modell und der Live-Test gegen den Vorschaltdienst sind offen. Was dokumentiert, implementiert, simuliert oder mit echtem Modell geprüft ist, steht in [07 · Umsetzung und Nachweise](docs/07_Umsetzung_und_Nachweise.md).
 
 ---
 
@@ -30,7 +30,14 @@ Quellen der Normen: `C:\Projekte\Skills\_docs\1_Architektur\Referenzarchitektur_
 
 ## Lokal starten
 
-Anleitung: [07 · Umsetzung und Nachweise](docs/07_Umsetzung_und_Nachweise.md), Abschnitt 5.
+Kurz (PowerShell, im Projektordner):
+
+```powershell
+.venv\Scripts\python.exe -m app.demo
+.venv\Scripts\python.exe run.py
+```
+
+Dann `http://127.0.0.1:5050/anmelden` öffnen (Organisation `beispiel-hs`, Benutzer `student`, Passwort aus der Demo-Ausgabe). Ausführlich: [07 · Umsetzung und Nachweise](docs/07_Umsetzung_und_Nachweise.md), Abschnitt 6.
 
 ## Ordnerstruktur
 

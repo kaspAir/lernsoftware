@@ -1,0 +1,851 @@
+{
+  "protokoll": {
+    "erzeugt_am": "2026-11-10T14:24:13.313317+00:00",
+    "umgebung": "develop",
+    "version_norm": "RA v0.4 · NR-01…NR-10",
+    "version_testset": "TS-1 (synthetisch)",
+    "modell_herkunft": "SIMULIERT (Testadapter); kein Lauf mit echtem Modell",
+    "zusammenfassung": {
+      "bestanden": 135,
+      "nicht_bestanden": 0,
+      "nicht_geprueft": 0
+    },
+    "nach_art": {
+      "technisch": {
+        "bestanden": 131,
+        "nicht_bestanden": 0,
+        "nicht_geprüft": 0
+      },
+      "fachlich_synthetisch": {
+        "bestanden": 4,
+        "nicht_bestanden": 0,
+        "nicht_geprüft": 0
+      },
+      "live": {
+        "bestanden": 0,
+        "nicht_bestanden": 0,
+        "nicht_geprüft": 1
+      }
+    },
+    "exitstatus": 0,
+    "faelle": [
+      {
+        "test": "tests/fachlich/test_referenzsatz.py::test_wuerfel_ergebnisraum_schluessel_stimmt",
+        "art": "fachlich_synthetisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/fachlich/test_referenzsatz.py::test_wuerfel_unvereinbar_schluessel_stimmt_mit_mengenpruefung",
+        "art": "fachlich_synthetisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/fachlich/test_referenzsatz.py::test_gegenereignis_schluessel_stimmt",
+        "art": "fachlich_synthetisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/fachlich/test_referenzsatz.py::test_testdaten_stimmen_mit_referenzsatz_ueberein",
+        "art": "fachlich_synthetisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_ablauf_durchgaengig.py::test_durchgaengiger_lernablauf",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_abnahme_ablauf.py::test_abnahme_durchgaengiger_browserablauf",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_abnahme_ablauf.py::test_abnahme_doppelabgabe_per_browser_erzeugt_einen_versuch",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_abnahme_ablauf.py::test_abnahme_zurueckgezogene_quelle_und_entzug",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_anmeldung.py::test_passwort_nur_als_argon2_hash",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_anmeldung.py::test_zu_kurzes_passwort_wird_abgelehnt",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_anmeldung.py::test_fehlversuche_sperren_konto_auch_bei_richtigem_passwort",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_anmeldung.py::test_fehlermeldung_verraet_keine_kontenexistenz",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_anmeldung.py::test_konto_in_zwei_organisationen_mit_getrennten_sitzungen",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_antwort_hilfe_abgabe.py::test_einzelauswahl_mit_mehrstelliger_id_wird_richtig_bewertet",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_antwort_hilfe_abgabe.py::test_einzelauswahl_als_text_wird_abgewiesen",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_antwort_hilfe_abgabe.py::test_unbekannte_option_wird_mit_namen_gemeldet",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_antwort_hilfe_abgabe.py::test_einzelauswahl_mit_zwei_optionen_und_leere_auswahl_werden_abgewiesen",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_antwort_hilfe_abgabe.py::test_ungueltige_datentypen_werden_abgewiesen",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_antwort_hilfe_abgabe.py::test_luecke_nimmt_nur_text",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_antwort_hilfe_abgabe.py::test_web_einzelauswahl_mit_mehrstelliger_id",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_antwort_hilfe_abgabe.py::test_hinweis_wird_angezeigt_und_bleibt_nach_neuladen",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_antwort_hilfe_abgabe.py::test_hinweis_erscheint_im_browser_und_ist_als_hilfe_vermerkt",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_antwort_hilfe_abgabe.py::test_fehlende_hilfe_wird_ehrlich_gemeldet_ohne_eintrag",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_antwort_hilfe_abgabe.py::test_gleicher_schluessel_erzeugt_keinen_zweiten_versuch",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_antwort_hilfe_abgabe.py::test_wiederholung_nach_hilfe_bleibt_nicht_selbststaendig",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_antwort_hilfe_abgabe.py::test_neue_bearbeitung_nach_frueherer_loesung_ist_nicht_selbststaendig",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_antwort_hilfe_abgabe.py::test_schluessel_fuer_andere_aufgabe_wird_abgewiesen",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_antwort_hilfe_abgabe.py::test_fehlender_oder_ungueltiger_schluessel_wird_abgewiesen",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_antwort_hilfe_abgabe.py::test_gleichzeitige_doppelabgaben_erzeugen_genau_einen_versuch",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_demo_und_start.py::test_demo_erzeugt_datenbank_und_student_kann_sich_anmelden",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_demo_und_start.py::test_modellmodus_ueber_umgebungsvariable",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_demo_und_start.py::test_modellmodus_ohne_umgebungsvariable_kommt_aus_config",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_demo_und_start.py::test_healthz_zeigt_wirksamen_modus",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_demo_und_start.py::test_zeiger_fuer_run_py_wird_geschrieben",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_aenderung_freigegebener_unterlage_setzt_status_zurueck",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_aufgaben_in_pruefung_sind_ausgeblendet_und_nicht_bearbeitbar",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_freigabe_unter_auflage_braucht_verantwortliche_und_zukunftsfrist",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_nicht_freigebbar_verlangt_begruendung",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_unterlage_version_bleibt_erhalten_und_nachweis_entsteht",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_richtige_antwort_mit_punkten_im_maximum",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_hilfe_vor_antwort_wird_vermerkt_und_zaehlt_nicht_selbststaendig",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_hilfe_ohne_hinterlegten_inhalt_wird_ehrlich_gemeldet",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_versuch_bleibt_unveraendert_wenn_aufgabe_spaeter_geaendert_wird",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_fremder_versuch_ist_nicht_sichtbar",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_auswertung_nur_ueber_schluessel_ohne_modell",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_freigabe_und_versuch.py::test_neue_fassung_nach_ablehnung_kehrt_in_den_entwurf",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_mehrere_rueckfragen_hintereinander_und_verlauf_bleibt",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_versuch_und_gespraech_nach_neuer_anmeldung_unveraendert",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_gespraech_wiederholung_erzeugt_keinen_zweiten_modellaufruf",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_modellkontext_ist_begrenzt_und_personenfrei",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_frage_ueber_laengengrenze_wird_abgewiesen",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_quellen_sind_durchgaengig_belegbar_und_nicht_erfunden",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_ungueltige_modellausgaben_werden_abgelehnt[daten0]",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_ungueltige_modellausgaben_werden_abgelehnt[daten1]",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_ungueltige_modellausgaben_werden_abgelehnt[daten2]",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_ungueltige_modellausgaben_werden_abgelehnt[daten3]",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_ungueltige_modellausgaben_werden_abgelehnt[daten4]",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_ungueltige_modellausgaben_werden_abgelehnt[daten5]",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_ungueltige_modellausgaben_werden_abgelehnt[daten6]",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_ungueltige_modellausgaben_werden_abgelehnt[daten7]",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_ungueltige_modellausgaben_werden_abgelehnt[daten8]",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_ungueltige_modellausgaben_werden_abgelehnt[daten9]",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_ungueltige_modellausgaben_werden_abgelehnt[daten10]",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_ungueltige_modellausgaben_werden_abgelehnt[daten11]",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_ungueltige_modellausgaben_werden_abgelehnt[kein Objekt]",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_gueltige_modellausgabe_wird_bereinigt_akzeptiert",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_annahmen_42_fuehrt_zu_wiederholung_und_standardantwort_ohne_serverfehler",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_zweite_gueltige_ausgabe_nach_wiederholung_wird_verwendet",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_modellfehler_und_blockade_sind_von_belegten_antworten_unterscheidbar",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_gespraech_und_modellausgabe.py::test_simulation_und_echte_ausgabe_sind_gekennzeichnet",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_kern.py::test_single_choice_voll_oder_null",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_kern.py::test_multiple_choice_teilpunkte_nie_negativ_nie_ueber_maximum[gegeben0-erwartet0]",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_kern.py::test_multiple_choice_teilpunkte_nie_negativ_nie_ueber_maximum[gegeben1-erwartet1]",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_kern.py::test_multiple_choice_teilpunkte_nie_negativ_nie_ueber_maximum[gegeben2-erwartet2]",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_kern.py::test_multiple_choice_teilpunkte_nie_negativ_nie_ueber_maximum[gegeben3-erwartet3]",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_kern.py::test_multiple_choice_teilpunkte_nie_negativ_nie_ueber_maximum[gegeben4-erwartet4]",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_kern.py::test_luecke_normalisiert_ohne_bedeutungsaenderung",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_kern.py::test_prozent_konsistent_und_null_maximum",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_kern.py::test_hilfe_zaehlt_nicht_als_selbststaendig",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_kern.py::test_mehrere_richtige_auf_dieselbe_aufgabe_zaehlen_einmal",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_kern.py::test_ausreichend_erst_ab_schwelle_und_widerspruch",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_kern.py::test_sm2_referenzwerte",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_kern.py::test_sm2_falsch_setzt_zurueck_und_ease_untergrenze",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_kern.py::test_sm2_intervall_obergrenze",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_kern.py::test_qualitaet_mapping",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_kern.py::test_abschnitte_lueckenlos_und_begrenzt",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_kern.py::test_markdown_ueberschrift_beginnt_neuen_abschnitt",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_fremde_quelle_wird_abgelehnt",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_bewertungssprache_wird_abgelehnt",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_antwort_ohne_quelle_wird_als_unbelegt_benannt",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_erfolgreiche_antwort_trägt_quelle_und_fachlich_ungeprueft",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_blockierte_pseudonymisierung_sendet_nichts_und_erfindet_nichts",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_modell_nicht_erreichbar_ergibt_klare_meldung",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_ungueltiges_schema_wird_nach_festen_wiederholungen_abgebrochen",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_simulierte_antwort_ist_als_solche_gekennzeichnet",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_simulation_ohne_ueberschneidung_meldet_luecke",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_vertrag_setzt_drei_pflichtkopfzeilen",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_409_wird_als_blockade_weitergereicht",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_502_wird_nicht_als_netzfehler_verschluckt",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_503_ohne_schluessel_ist_konfigurationsfehler",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_netzfehler_wird_zu_modellfehler",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_leere_basis_url_verweigert_modellzugang",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_lernbegleiter_und_modell.py::test_konstante_kopfzeilen_nicht_aus_eingabe",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_live_vorschaltdienst.py::test_vorschaltdienst_gesundheit_erreichbar",
+        "art": "live",
+        "ergebnis": "nicht_geprüft",
+        "grund": "('C:\\\\Projekte\\\\Lernsoftware\\\\tests\\\\test_live_vorschaltdienst.py', 22, 'Skipped: VORSCHALT_LIVE != 1: Live-Test nicht ausgeführt (als nicht geprüft protokolliert)')"
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_fremde_unterlage_ist_nicht_auffindbar",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_fremdes_modul_nicht_in_liste_und_nicht_lesbar",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_mandantenlose_abfrage_wird_verweigert",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_mandant_abfrage_liefert_nur_eigene_zeilen",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_superadmin_sieht_nur_registrierungsdaten",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_superadmin_hat_keinen_zugriff_auf_inhalte",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_studierende_sieht_nur_zugewiesene_module",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_assistenz_darf_nicht_freigeben_ohne_delegation",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_delegierte_assistenz_darf_freigeben",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_admin_gibt_nicht_frei",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_studierende_pflegen_keine_inhalte",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_schreibende_anfrage_ohne_csrf_wird_abgewiesen",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_mandant_und_rollen.py::test_sitzungscookie_ist_httponly",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_web_oberflaeche.py::test_anmeldeseite_ist_erreichbar_und_beschriftet",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_web_oberflaeche.py::test_module_ohne_anmeldung_leiten_zur_anmeldung",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_web_oberflaeche.py::test_studierende_sieht_modul_lektionen_und_uebung_erzeugen",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_web_oberflaeche.py::test_post_ohne_csrf_wird_in_oberflaeche_abgewiesen",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_web_oberflaeche.py::test_rueckmeldung_zeigt_quelle_und_bleibt_zugaenglich",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_zugriff_sitzung_rollen.py::test_aenderung_wirkt_auf_bestehende_uebung_und_hilfe",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_zugriff_sitzung_rollen.py::test_historischer_versuch_bleibt_lesbar_mit_altem_stand",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_zugriff_sitzung_rollen.py::test_neue_erklaerung_wird_bei_gesperrter_quelle_nicht_erzeugt",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_zugriff_sitzung_rollen.py::test_neue_erklaerung_bei_neuer_quellenfassung_wird_abgelehnt_historie_bleibt",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_zugriff_sitzung_rollen.py::test_abschnitt_zeigt_historischen_stand_und_aktuellen_status",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_zugriff_sitzung_rollen.py::test_entzogene_modulrolle_sperrt_begonnene_uebung",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_zugriff_sitzung_rollen.py::test_deaktiviertes_konto_verliert_bestehende_sitzung",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_zugriff_sitzung_rollen.py::test_deaktivierte_organisation_verliert_bestehende_sitzung",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_zugriff_sitzung_rollen.py::test_deaktivierter_superadmin_verliert_zugang",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_zugriff_sitzung_rollen.py::test_sitzungsgrenze_ist_120_minuten_ab_anmeldung",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_zugriff_sitzung_rollen.py::test_sitzung_laeuft_nach_ablauf_im_api_ab",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_zugriff_sitzung_rollen.py::test_sitzung_im_browser_laeuft_ab",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_zugriff_sitzung_rollen.py::test_genau_eine_modulrolle_je_konto_und_modul",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      },
+      {
+        "test": "tests/test_zugriff_sitzung_rollen.py::test_mehrfachrolle_verliert_keine_bisherigen_rechte",
+        "art": "technisch",
+        "ergebnis": "bestanden",
+        "grund": null
+      }
+    ],
+    "herkunft": "Test-Runner (pytest)"
+  }
+}

@@ -23,7 +23,7 @@ Liste 1 des Konformitätsnachweises. Status: **umgesetzt** (im Code, mit Test), 
 | RA-05 | Freigabe ist Tor; Änderung macht sie ungültig | Unterlage `in_pruefung` bei Änderung im selben Vorgang | Spez. §4.2 | umgesetzt (Inkr. 1), TC-FRE-01 |
 | RA-06 | Änderungen sind Übergänge | `schema_version`, Aufgabenversion, Versuchstreue | Spez. §8 | umgesetzt (Versuchskopie), TC-PRF-04 |
 | RA-07 | Konfiguration vor Programmierung | Basiswerte, Vokabular, Prüfungsrahmen als YAML | Spez. §9 | teilweise (Basiswerte und Vokabular in Inkr. 1) |
-| RA-08 | Mandantentrennung ist Struktur | `lernorganisation_id` auf jedem Objekt; Repository-Schicht bindet Mandant; RLS Inkr. 2 | ADR-L-006, Abweichung A-2 | Struktur im Code (Inkr. 1), Auslegung für Plattformregister (B-01) |
+| RA-08 | Mandantentrennung ist Struktur | `lernorganisation_id` auf jedem Objekt; Repository-Schicht bindet Mandant; RLS Inkr. 5 | ADR-L-006, Abweichung A-2 | Struktur im Code (Inkr. 1), Auslegung für Plattformregister (B-01) |
 | RA-09 | Kein direkter Modellkontakt | einzige Adapterstelle; Vorschaltdienst als Basis-URL | §5.4, §6 | umgesetzt (Adapter + Testadapter), Live-Test abhängig von D-05 |
 | RA-10 | Jedes Ergebnis trägt seine Herkunft | `herkunft` je Rückmeldung und Versuch | Spez. §3.4 | umgesetzt (Inkr. 1) |
 | RA-11 | Unsicherheit ist ein Feld | `evidenzlage`, `sicherheitsgrad`, Datum der letzten Evidenz | Spez. §6.2, §6.4, §10 | umgesetzt (Inkr. 1) |
@@ -108,7 +108,7 @@ Begründung: Der Ablauf «Lektion wählen → Übung → Antwort → Rückmeldun
 4. Anzeige: Text, Quelle, «fachlich ungeprüft», Sicherheitsgrad.
 
 ### 5.5 Mandantenkontext
-Jede Anfrage trägt eine Sitzung mit genau einer Lernorganisation (BE-05). Die Repository-Schicht verlangt den Mandanten für jede Abfrage (ADR-L-006). Im Ziel-Zustand setzt PostgreSQL RLS den Kontext je Verbindung.
+Jede Anfrage trägt eine Sitzung mit genau einer Lernorganisation (BE-05). Die Repository-Schicht verlangt den Mandanten für jede Abfrage (ADR-L-006). Das Ziel ist PostgreSQL mit RLS, das den Kontext je Verbindung setzt; die Umsetzung folgt in Inkrement 5 (ADR-L-006, A-2).
 
 ## 6 · Modellzugang und Vorschaltdienst
 
@@ -116,7 +116,7 @@ Jede Anfrage trägt eine Sitzung mit genau einer Lernorganisation (BE-05). Die R
 |---|---|
 | Capability `ki_aufruf` | Vertrag v0.1 im Katalog (Abschnitt 5.2): Eingabe `auftrag, modellklasse, mandant`; Ausgabe `antwort, aufrufnachweis`; Invariante: jeder Aufruf durch die Pseudonymisierung. |
 | Vorschaltdienst `Pseudonymisierung` | Projekt `C:\Projekte\Pseudonymisierung`. README: «Dienst gebaut und getestet, Erstinstallation auf dem Host läuft». API-Referenz geprüft (`docs/API.md`, Stand 2026-07-21). Ports 8040 (develop) … 8043. Kopfzeilen `X-Pseudo-Anwendung`, `X-Pseudo-Mandant`, `X-Pseudo-Projekt`. Fehler 409 (Entscheidung nötig), 502 (Rückersetzung unvollständig), 503 (kein Schlüssel). |
-| **Laufzeitstatus** | **nicht bestätigt.** `GET http://127.0.0.1:8040/pseudo/v1/health` lieferte beim Prüfen keine Antwort. Der Dienst ist im Projekt als verfügbar **nicht** geführt, bis der Health-Check antwortet. |
+| **Laufzeitstatus** | Am 2026-11-10 lief der Dienst im Modus `develop` (`GET /pseudo/v1/health` → `bereit`); der Live-Health-Test ist bestanden. **Die Anwendung `lernsoftware` ist dort noch nicht registriert**, daher sind 409- und 503-Antworten nur gegen den Testadapter geprüft (A-5). |
 | Adapter im Projekt | `app/modell/adapter.py`: spricht `/anthropic/v1/messages` bzw. den Pfad der gewählten Klasse über die Basis-URL. Das Verhalten bei 409 und 502 folgt der Vorgabe in `ANBINDUNG.md` §6.2 (Ausnahmeklasse, kein generisches Schlucken). |
 | Testadapter | `app/modell/testadapter.py`: deterministisch, `herkunft: SIMULIERT`. |
 
@@ -162,7 +162,7 @@ Portblock: offen (D-11). Schlüssel nur in `.env`, nie im Repository. Start-Warn
 
 ## 11 · Offene Architekturpunkte
 
-- RLS-Umsetzung und Tests gegen PostgreSQL (A-2 in 07).
+- RLS-Umsetzung und Tests gegen PostgreSQL (Inkrement 5, A-2 in 07).
 - Befund B-01 (Plattformregister und RA-08) zur Klärung an die Architektur.
 - Vorschaltdienst-Laufzeit (D-05).
 - Bedienungsnorm (D-10).
