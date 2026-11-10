@@ -124,12 +124,12 @@ Keine stille Abweichung: jede Abweichung steht hier und im Konformitätsnachweis
 
 ## 4 · Testergebnisse Inkrement 1
 
-**Protokoll:** `docs/nachweise/testprotokoll-20261110T121013Z.json` (RA-13, nicht überschreiben; Erzeugung nur mit `LERNSOFTWARE_PROTOKOLL=1`).
+**Protokoll:** `docs/nachweise/testprotokoll-20261110T133104Z.json` (aktuellster Lauf, Live-Test eingeschlossen). Ältere Läufe bleiben unverändert erhalten (RA-13).
 
 | Ergebnis | Anzahl |
 |---|---|
-| bestanden | 64 |
-| **nicht bestanden** | **1** (`test_live_vorschaltdienst.py::test_vorschaltdienst_gesundheit_erreichbar`: Dienst nicht erreichbar) |
+| bestanden | 70 |
+| nicht bestanden | 0 |
 | nicht geprüft (übersprungen) | 0 |
 
 **Modellherkunft der Testläufe:** alle Läufe mit Testadapter (SIMULIERT). **Kein Testlauf mit einem echten Modell.**
